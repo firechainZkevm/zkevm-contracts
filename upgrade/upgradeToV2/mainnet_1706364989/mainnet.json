@@ -103,56 +103,56 @@
             "offset": 1,
             "slot": "104",
             "type": "t_uint32",
-            "contract": "PolygonZkEVMBridge",
-            "src": "contracts/PolygonZkEVMBridge.sol:51"
+            "contract": "FirechainZkEVMBridge",
+            "src": "contracts/FirechainZkEVMBridge.sol:51"
           },
           {
             "label": "globalExitRootManager",
             "offset": 5,
             "slot": "104",
-            "type": "t_contract(IBasePolygonZkEVMGlobalExitRoot)10065",
-            "contract": "PolygonZkEVMBridge",
-            "src": "contracts/PolygonZkEVMBridge.sol:54"
+            "type": "t_contract(IBaseFirechainZkEVMGlobalExitRoot)10065",
+            "contract": "FirechainZkEVMBridge",
+            "src": "contracts/FirechainZkEVMBridge.sol:54"
           },
           {
             "label": "lastUpdatedDepositCount",
             "offset": 25,
             "slot": "104",
             "type": "t_uint32",
-            "contract": "PolygonZkEVMBridge",
-            "src": "contracts/PolygonZkEVMBridge.sol:57"
+            "contract": "FirechainZkEVMBridge",
+            "src": "contracts/FirechainZkEVMBridge.sol:57"
           },
           {
             "label": "claimedBitMap",
             "offset": 0,
             "slot": "105",
             "type": "t_mapping(t_uint256,t_uint256)",
-            "contract": "PolygonZkEVMBridge",
-            "src": "contracts/PolygonZkEVMBridge.sol:60"
+            "contract": "FirechainZkEVMBridge",
+            "src": "contracts/FirechainZkEVMBridge.sol:60"
           },
           {
             "label": "tokenInfoToWrappedToken",
             "offset": 0,
             "slot": "106",
             "type": "t_mapping(t_bytes32,t_address)",
-            "contract": "PolygonZkEVMBridge",
-            "src": "contracts/PolygonZkEVMBridge.sol:63"
+            "contract": "FirechainZkEVMBridge",
+            "src": "contracts/FirechainZkEVMBridge.sol:63"
           },
           {
             "label": "wrappedTokenToTokenInfo",
             "offset": 0,
             "slot": "107",
             "type": "t_mapping(t_address,t_struct(TokenInformation)8241_storage)",
-            "contract": "PolygonZkEVMBridge",
-            "src": "contracts/PolygonZkEVMBridge.sol:66"
+            "contract": "FirechainZkEVMBridge",
+            "src": "contracts/FirechainZkEVMBridge.sol:66"
           },
           {
-            "label": "polygonZkEVMaddress",
+            "label": "firechainZkEVMaddress",
             "offset": 0,
             "slot": "108",
             "type": "t_address",
-            "contract": "PolygonZkEVMBridge",
-            "src": "contracts/PolygonZkEVMBridge.sol:69"
+            "contract": "FirechainZkEVMBridge",
+            "src": "contracts/FirechainZkEVMBridge.sol:69"
           }
         ],
         "types": {
@@ -180,12 +180,12 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IBasePolygonZkEVMGlobalExitRoot)10065": {
-            "label": "contract IBasePolygonZkEVMGlobalExitRoot",
+          "t_contract(IBaseFirechainZkEVMGlobalExitRoot)10065": {
+            "label": "contract IBaseFirechainZkEVMGlobalExitRoot",
             "numberOfBytes": "20"
           },
           "t_mapping(t_address,t_struct(TokenInformation)8241_storage)": {
-            "label": "mapping(address => struct PolygonZkEVMBridge.TokenInformation)",
+            "label": "mapping(address => struct FirechainZkEVMBridge.TokenInformation)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_bytes32,t_address)": {
@@ -197,7 +197,7 @@
             "numberOfBytes": "32"
           },
           "t_struct(TokenInformation)8241_storage": {
-            "label": "struct PolygonZkEVMBridge.TokenInformation",
+            "label": "struct FirechainZkEVMBridge.TokenInformation",
             "members": [
               {
                 "label": "originNetwork",
@@ -240,24 +240,24 @@
             "offset": 0,
             "slot": "0",
             "type": "t_bytes32",
-            "contract": "PolygonZkEVMGlobalExitRoot",
-            "src": "contracts/PolygonZkEVMGlobalExitRoot.sol:19"
+            "contract": "FirechainZkEVMGlobalExitRoot",
+            "src": "contracts/FirechainZkEVMGlobalExitRoot.sol:19"
           },
           {
             "label": "lastMainnetExitRoot",
             "offset": 0,
             "slot": "1",
             "type": "t_bytes32",
-            "contract": "PolygonZkEVMGlobalExitRoot",
-            "src": "contracts/PolygonZkEVMGlobalExitRoot.sol:22"
+            "contract": "FirechainZkEVMGlobalExitRoot",
+            "src": "contracts/FirechainZkEVMGlobalExitRoot.sol:22"
           },
           {
             "label": "globalExitRootMap",
             "offset": 0,
             "slot": "2",
             "type": "t_mapping(t_bytes32,t_uint256)",
-            "contract": "PolygonZkEVMGlobalExitRoot",
-            "src": "contracts/PolygonZkEVMGlobalExitRoot.sol:25"
+            "contract": "FirechainZkEVMGlobalExitRoot",
+            "src": "contracts/FirechainZkEVMGlobalExitRoot.sol:25"
           }
         ],
         "types": {
@@ -344,192 +344,192 @@
             "offset": 1,
             "slot": "111",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:167"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:167"
           },
           {
             "label": "multiplierBatchFee",
             "offset": 9,
             "slot": "111",
             "type": "t_uint16",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:170"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:170"
           },
           {
             "label": "trustedSequencer",
             "offset": 11,
             "slot": "111",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:173"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:173"
           },
           {
             "label": "batchFee",
             "offset": 0,
             "slot": "112",
             "type": "t_uint256",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:176"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:176"
           },
           {
             "label": "forcedBatches",
             "offset": 0,
             "slot": "113",
             "type": "t_mapping(t_uint64,t_bytes32)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:182"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:182"
           },
           {
             "label": "sequencedBatches",
             "offset": 0,
             "slot": "114",
             "type": "t_mapping(t_uint64,t_struct(SequencedBatchData)5680_storage)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:186"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:186"
           },
           {
             "label": "lastTimestamp",
             "offset": 0,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:189"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:189"
           },
           {
             "label": "lastBatchSequenced",
             "offset": 8,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:192"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:192"
           },
           {
             "label": "lastForceBatchSequenced",
             "offset": 16,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:195"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:195"
           },
           {
             "label": "lastForceBatch",
             "offset": 24,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:198"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:198"
           },
           {
             "label": "lastVerifiedBatch",
             "offset": 0,
             "slot": "116",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:201"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:201"
           },
           {
             "label": "trustedAggregator",
             "offset": 8,
             "slot": "116",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:204"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:204"
           },
           {
             "label": "batchNumToStateRoot",
             "offset": 0,
             "slot": "117",
             "type": "t_mapping(t_uint64,t_bytes32)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:208"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:208"
           },
           {
             "label": "trustedSequencerURL",
             "offset": 0,
             "slot": "118",
             "type": "t_string_storage",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:211"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:211"
           },
           {
             "label": "networkName",
             "offset": 0,
             "slot": "119",
             "type": "t_string_storage",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:214"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:214"
           },
           {
             "label": "pendingStateTransitions",
             "offset": 0,
             "slot": "120",
             "type": "t_mapping(t_uint256,t_struct(PendingState)5689_storage)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:218"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:218"
           },
           {
             "label": "lastPendingState",
             "offset": 0,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:221"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:221"
           },
           {
             "label": "lastPendingStateConsolidated",
             "offset": 8,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:224"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:224"
           },
           {
             "label": "pendingStateTimeout",
             "offset": 16,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:227"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:227"
           },
           {
             "label": "trustedAggregatorTimeout",
             "offset": 24,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:231"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:231"
           },
           {
             "label": "admin",
             "offset": 0,
             "slot": "122",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:234"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:234"
           },
           {
             "label": "pendingAdmin",
             "offset": 0,
             "slot": "123",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:237"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:237"
           },
           {
             "label": "forceBatchTimeout",
             "offset": 20,
             "slot": "123",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:240"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:240"
           },
           {
             "label": "isForcedBatchDisallowed",
             "offset": 28,
             "slot": "123",
             "type": "t_bool",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:243"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:243"
           }
         ],
         "types": {
@@ -558,7 +558,7 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint256,t_struct(PendingState)5689_storage)": {
-            "label": "mapping(uint256 => struct PolygonZkEVM.PendingState)",
+            "label": "mapping(uint256 => struct FirechainZkEVM.PendingState)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint64,t_bytes32)": {
@@ -566,7 +566,7 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint64,t_struct(SequencedBatchData)5680_storage)": {
-            "label": "mapping(uint64 => struct PolygonZkEVM.SequencedBatchData)",
+            "label": "mapping(uint64 => struct FirechainZkEVM.SequencedBatchData)",
             "numberOfBytes": "32"
           },
           "t_string_storage": {
@@ -574,7 +574,7 @@
             "numberOfBytes": "32"
           },
           "t_struct(PendingState)5689_storage": {
-            "label": "struct PolygonZkEVM.PendingState",
+            "label": "struct FirechainZkEVM.PendingState",
             "members": [
               {
                 "label": "timestamp",
@@ -604,7 +604,7 @@
             "numberOfBytes": "96"
           },
           "t_struct(SequencedBatchData)5680_storage": {
-            "label": "struct PolygonZkEVM.SequencedBatchData",
+            "label": "struct FirechainZkEVM.SequencedBatchData",
             "members": [
               {
                 "label": "accInputHash",
@@ -714,208 +714,208 @@
             "offset": 1,
             "slot": "111",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:167"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:167"
           },
           {
             "label": "multiplierBatchFee",
             "offset": 9,
             "slot": "111",
             "type": "t_uint16",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:170"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:170"
           },
           {
             "label": "trustedSequencer",
             "offset": 11,
             "slot": "111",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:173"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:173"
           },
           {
             "label": "batchFee",
             "offset": 0,
             "slot": "112",
             "type": "t_uint256",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:176"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:176"
           },
           {
             "label": "forcedBatches",
             "offset": 0,
             "slot": "113",
             "type": "t_mapping(t_uint64,t_bytes32)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:182"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:182"
           },
           {
             "label": "sequencedBatches",
             "offset": 0,
             "slot": "114",
             "type": "t_mapping(t_uint64,t_struct(SequencedBatchData)5683_storage)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:186"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:186"
           },
           {
             "label": "lastTimestamp",
             "offset": 0,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:189"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:189"
           },
           {
             "label": "lastBatchSequenced",
             "offset": 8,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:192"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:192"
           },
           {
             "label": "lastForceBatchSequenced",
             "offset": 16,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:195"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:195"
           },
           {
             "label": "lastForceBatch",
             "offset": 24,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:198"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:198"
           },
           {
             "label": "lastVerifiedBatch",
             "offset": 0,
             "slot": "116",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:201"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:201"
           },
           {
             "label": "trustedAggregator",
             "offset": 8,
             "slot": "116",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:204"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:204"
           },
           {
             "label": "batchNumToStateRoot",
             "offset": 0,
             "slot": "117",
             "type": "t_mapping(t_uint64,t_bytes32)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:208"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:208"
           },
           {
             "label": "trustedSequencerURL",
             "offset": 0,
             "slot": "118",
             "type": "t_string_storage",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:211"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:211"
           },
           {
             "label": "networkName",
             "offset": 0,
             "slot": "119",
             "type": "t_string_storage",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:214"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:214"
           },
           {
             "label": "pendingStateTransitions",
             "offset": 0,
             "slot": "120",
             "type": "t_mapping(t_uint256,t_struct(PendingState)5693_storage)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:218"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:218"
           },
           {
             "label": "lastPendingState",
             "offset": 0,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:221"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:221"
           },
           {
             "label": "lastPendingStateConsolidated",
             "offset": 8,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:224"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:224"
           },
           {
             "label": "pendingStateTimeout",
             "offset": 16,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:227"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:227"
           },
           {
             "label": "trustedAggregatorTimeout",
             "offset": 24,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:231"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:231"
           },
           {
             "label": "admin",
             "offset": 0,
             "slot": "122",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:234"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:234"
           },
           {
             "label": "pendingAdmin",
             "offset": 0,
             "slot": "123",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:237"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:237"
           },
           {
             "label": "forceBatchTimeout",
             "offset": 20,
             "slot": "123",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:240"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:240"
           },
           {
             "label": "isForcedBatchDisallowed",
             "offset": 28,
             "slot": "123",
             "type": "t_bool",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:243"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:243"
           },
           {
             "label": "version",
             "offset": 0,
             "slot": "124",
             "type": "t_uint256",
-            "contract": "PolygonZkEVMUpgraded",
-            "src": "contracts/mainnetUpgraded/PolygonZkEVMUpgraded.sol:15"
+            "contract": "FirechainZkEVMUpgraded",
+            "src": "contracts/mainnetUpgraded/FirechainZkEVMUpgraded.sol:15"
           },
           {
             "label": "lastVerifiedBatchBeforeUpgrade",
             "offset": 0,
             "slot": "125",
             "type": "t_uint256",
-            "contract": "PolygonZkEVMUpgraded",
-            "src": "contracts/mainnetUpgraded/PolygonZkEVMUpgraded.sol:18"
+            "contract": "FirechainZkEVMUpgraded",
+            "src": "contracts/mainnetUpgraded/FirechainZkEVMUpgraded.sol:18"
           }
         ],
         "types": {
@@ -944,7 +944,7 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint256,t_struct(PendingState)5693_storage)": {
-            "label": "mapping(uint256 => struct PolygonZkEVM.PendingState)",
+            "label": "mapping(uint256 => struct FirechainZkEVM.PendingState)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint64,t_bytes32)": {
@@ -952,7 +952,7 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint64,t_struct(SequencedBatchData)5683_storage)": {
-            "label": "mapping(uint64 => struct PolygonZkEVM.SequencedBatchData)",
+            "label": "mapping(uint64 => struct FirechainZkEVM.SequencedBatchData)",
             "numberOfBytes": "32"
           },
           "t_string_storage": {
@@ -960,7 +960,7 @@
             "numberOfBytes": "32"
           },
           "t_struct(PendingState)5693_storage": {
-            "label": "struct PolygonZkEVM.PendingState",
+            "label": "struct FirechainZkEVM.PendingState",
             "members": [
               {
                 "label": "timestamp",
@@ -990,7 +990,7 @@
             "numberOfBytes": "96"
           },
           "t_struct(SequencedBatchData)5683_storage": {
-            "label": "struct PolygonZkEVM.SequencedBatchData",
+            "label": "struct FirechainZkEVM.SequencedBatchData",
             "members": [
               {
                 "label": "accInputHash",
@@ -1100,208 +1100,208 @@
             "offset": 1,
             "slot": "111",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:167"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:167"
           },
           {
             "label": "multiplierBatchFee",
             "offset": 9,
             "slot": "111",
             "type": "t_uint16",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:170"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:170"
           },
           {
             "label": "trustedSequencer",
             "offset": 11,
             "slot": "111",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:173"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:173"
           },
           {
             "label": "batchFee",
             "offset": 0,
             "slot": "112",
             "type": "t_uint256",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:176"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:176"
           },
           {
             "label": "forcedBatches",
             "offset": 0,
             "slot": "113",
             "type": "t_mapping(t_uint64,t_bytes32)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:182"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:182"
           },
           {
             "label": "sequencedBatches",
             "offset": 0,
             "slot": "114",
             "type": "t_mapping(t_uint64,t_struct(SequencedBatchData)5683_storage)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:186"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:186"
           },
           {
             "label": "lastTimestamp",
             "offset": 0,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:189"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:189"
           },
           {
             "label": "lastBatchSequenced",
             "offset": 8,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:192"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:192"
           },
           {
             "label": "lastForceBatchSequenced",
             "offset": 16,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:195"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:195"
           },
           {
             "label": "lastForceBatch",
             "offset": 24,
             "slot": "115",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:198"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:198"
           },
           {
             "label": "lastVerifiedBatch",
             "offset": 0,
             "slot": "116",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:201"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:201"
           },
           {
             "label": "trustedAggregator",
             "offset": 8,
             "slot": "116",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:204"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:204"
           },
           {
             "label": "batchNumToStateRoot",
             "offset": 0,
             "slot": "117",
             "type": "t_mapping(t_uint64,t_bytes32)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:208"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:208"
           },
           {
             "label": "trustedSequencerURL",
             "offset": 0,
             "slot": "118",
             "type": "t_string_storage",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:211"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:211"
           },
           {
             "label": "networkName",
             "offset": 0,
             "slot": "119",
             "type": "t_string_storage",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:214"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:214"
           },
           {
             "label": "pendingStateTransitions",
             "offset": 0,
             "slot": "120",
             "type": "t_mapping(t_uint256,t_struct(PendingState)5693_storage)",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:218"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:218"
           },
           {
             "label": "lastPendingState",
             "offset": 0,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:221"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:221"
           },
           {
             "label": "lastPendingStateConsolidated",
             "offset": 8,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:224"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:224"
           },
           {
             "label": "pendingStateTimeout",
             "offset": 16,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:227"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:227"
           },
           {
             "label": "trustedAggregatorTimeout",
             "offset": 24,
             "slot": "121",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:231"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:231"
           },
           {
             "label": "admin",
             "offset": 0,
             "slot": "122",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:234"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:234"
           },
           {
             "label": "pendingAdmin",
             "offset": 0,
             "slot": "123",
             "type": "t_address",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:237"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:237"
           },
           {
             "label": "forceBatchTimeout",
             "offset": 20,
             "slot": "123",
             "type": "t_uint64",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:240"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:240"
           },
           {
             "label": "isForcedBatchDisallowed",
             "offset": 28,
             "slot": "123",
             "type": "t_bool",
-            "contract": "PolygonZkEVM",
-            "src": "contracts/PolygonZkEVM.sol:243"
+            "contract": "FirechainZkEVM",
+            "src": "contracts/FirechainZkEVM.sol:243"
           },
           {
             "label": "version",
             "offset": 0,
             "slot": "124",
             "type": "t_uint256",
-            "contract": "PolygonZkEVMUpgraded",
-            "src": "contracts/mainnetUpgraded/PolygonZkEVMUpgraded.sol:15"
+            "contract": "FirechainZkEVMUpgraded",
+            "src": "contracts/mainnetUpgraded/FirechainZkEVMUpgraded.sol:15"
           },
           {
             "label": "lastVerifiedBatchBeforeUpgrade",
             "offset": 0,
             "slot": "125",
             "type": "t_uint256",
-            "contract": "PolygonZkEVMUpgraded",
-            "src": "contracts/mainnetUpgraded/PolygonZkEVMUpgraded.sol:18"
+            "contract": "FirechainZkEVMUpgraded",
+            "src": "contracts/mainnetUpgraded/FirechainZkEVMUpgraded.sol:18"
           }
         ],
         "types": {
@@ -1330,7 +1330,7 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint256,t_struct(PendingState)5693_storage)": {
-            "label": "mapping(uint256 => struct PolygonZkEVM.PendingState)",
+            "label": "mapping(uint256 => struct FirechainZkEVM.PendingState)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint64,t_bytes32)": {
@@ -1338,7 +1338,7 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint64,t_struct(SequencedBatchData)5683_storage)": {
-            "label": "mapping(uint64 => struct PolygonZkEVM.SequencedBatchData)",
+            "label": "mapping(uint64 => struct FirechainZkEVM.SequencedBatchData)",
             "numberOfBytes": "32"
           },
           "t_string_storage": {
@@ -1346,7 +1346,7 @@
             "numberOfBytes": "32"
           },
           "t_struct(PendingState)5693_storage": {
-            "label": "struct PolygonZkEVM.PendingState",
+            "label": "struct FirechainZkEVM.PendingState",
             "members": [
               {
                 "label": "timestamp",
@@ -1376,7 +1376,7 @@
             "numberOfBytes": "96"
           },
           "t_struct(SequencedBatchData)5683_storage": {
-            "label": "struct PolygonZkEVM.SequencedBatchData",
+            "label": "struct FirechainZkEVM.SequencedBatchData",
             "members": [
               {
                 "label": "accInputHash",
@@ -1503,89 +1503,89 @@
             "offset": 1,
             "slot": "104",
             "type": "t_uint32",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:61"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:61"
           },
           {
             "label": "globalExitRootManager",
             "offset": 5,
             "slot": "104",
-            "type": "t_contract(IBasePolygonZkEVMGlobalExitRoot)1675",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:64"
+            "type": "t_contract(IBaseFirechainZkEVMGlobalExitRoot)1675",
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:64"
           },
           {
             "label": "lastUpdatedDepositCount",
             "offset": 25,
             "slot": "104",
             "type": "t_uint32",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:67"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:67"
           },
           {
             "label": "claimedBitMap",
             "offset": 0,
             "slot": "105",
             "type": "t_mapping(t_uint256,t_uint256)",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:70"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:70"
           },
           {
             "label": "tokenInfoToWrappedToken",
             "offset": 0,
             "slot": "106",
             "type": "t_mapping(t_bytes32,t_address)",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:73"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:73"
           },
           {
             "label": "wrappedTokenToTokenInfo",
             "offset": 0,
             "slot": "107",
             "type": "t_mapping(t_address,t_struct(TokenInformation)2064_storage)",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:76"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:76"
           },
           {
-            "label": "polygonRollupManager",
+            "label": "firechainRollupManager",
             "offset": 0,
             "slot": "108",
             "type": "t_address",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:80",
-            "renamedFrom": "polygonZkEVMaddress"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:80",
+            "renamedFrom": "firechainZkEVMaddress"
           },
           {
             "label": "gasTokenAddress",
             "offset": 0,
             "slot": "109",
             "type": "t_address",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:83"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:83"
           },
           {
             "label": "gasTokenNetwork",
             "offset": 20,
             "slot": "109",
             "type": "t_uint32",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:86"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:86"
           },
           {
             "label": "gasTokenMetadata",
             "offset": 0,
             "slot": "110",
             "type": "t_bytes_storage",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:89"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:89"
           },
           {
             "label": "WETHToken",
             "offset": 0,
             "slot": "111",
             "type": "t_contract(TokenWrapped)2037",
-            "contract": "PolygonZkEVMBridgeV2",
-            "src": "contracts/v2/PolygonZkEVMBridgeV2.sol:92"
+            "contract": "FirechainZkEVMBridgeV2",
+            "src": "contracts/v2/FirechainZkEVMBridgeV2.sol:92"
           }
         ],
         "types": {
@@ -1617,8 +1617,8 @@
             "label": "bytes",
             "numberOfBytes": "32"
           },
-          "t_contract(IBasePolygonZkEVMGlobalExitRoot)1675": {
-            "label": "contract IBasePolygonZkEVMGlobalExitRoot",
+          "t_contract(IBaseFirechainZkEVMGlobalExitRoot)1675": {
+            "label": "contract IBaseFirechainZkEVMGlobalExitRoot",
             "numberOfBytes": "20"
           },
           "t_contract(TokenWrapped)2037": {
@@ -1626,7 +1626,7 @@
             "numberOfBytes": "20"
           },
           "t_mapping(t_address,t_struct(TokenInformation)2064_storage)": {
-            "label": "mapping(address => struct PolygonZkEVMBridgeV2.TokenInformation)",
+            "label": "mapping(address => struct FirechainZkEVMBridgeV2.TokenInformation)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_bytes32,t_address)": {
@@ -1638,7 +1638,7 @@
             "numberOfBytes": "32"
           },
           "t_struct(TokenInformation)2064_storage": {
-            "label": "struct PolygonZkEVMBridgeV2.TokenInformation",
+            "label": "struct FirechainZkEVMBridgeV2.TokenInformation",
             "members": [
               {
                 "label": "originNetwork",
@@ -1682,24 +1682,24 @@
             "offset": 0,
             "slot": "0",
             "type": "t_bytes32",
-            "contract": "PolygonZkEVMGlobalExitRootBaseStorage",
-            "src": "contracts/v2/lib/PolygonZkEVMGlobalExitRootBaseStorage.sol:14"
+            "contract": "FirechainZkEVMGlobalExitRootBaseStorage",
+            "src": "contracts/v2/lib/FirechainZkEVMGlobalExitRootBaseStorage.sol:14"
           },
           {
             "label": "lastMainnetExitRoot",
             "offset": 0,
             "slot": "1",
             "type": "t_bytes32",
-            "contract": "PolygonZkEVMGlobalExitRootBaseStorage",
-            "src": "contracts/v2/lib/PolygonZkEVMGlobalExitRootBaseStorage.sol:17"
+            "contract": "FirechainZkEVMGlobalExitRootBaseStorage",
+            "src": "contracts/v2/lib/FirechainZkEVMGlobalExitRootBaseStorage.sol:17"
           },
           {
             "label": "globalExitRootMap",
             "offset": 0,
             "slot": "2",
             "type": "t_mapping(t_bytes32,t_uint256)",
-            "contract": "PolygonZkEVMGlobalExitRootBaseStorage",
-            "src": "contracts/v2/lib/PolygonZkEVMGlobalExitRootBaseStorage.sol:21"
+            "contract": "FirechainZkEVMGlobalExitRootBaseStorage",
+            "src": "contracts/v2/lib/FirechainZkEVMGlobalExitRootBaseStorage.sol:21"
           },
           {
             "label": "_branch",
@@ -1787,8 +1787,8 @@
             "offset": 0,
             "slot": "51",
             "type": "t_address",
-            "contract": "PolygonAccessControlUpgradeable",
-            "src": "contracts/v2/lib/PolygonAccessControlUpgradeable.sol:29",
+            "contract": "FirechainAccessControlUpgradeable",
+            "src": "contracts/v2/lib/FirechainAccessControlUpgradeable.sol:29",
             "renamedFrom": "_owner"
           },
           {
@@ -1796,16 +1796,16 @@
             "offset": 0,
             "slot": "52",
             "type": "t_mapping(t_bytes32,t_struct(RoleData)7463_storage)",
-            "contract": "PolygonAccessControlUpgradeable",
-            "src": "contracts/v2/lib/PolygonAccessControlUpgradeable.sol:36"
+            "contract": "FirechainAccessControlUpgradeable",
+            "src": "contracts/v2/lib/FirechainAccessControlUpgradeable.sol:36"
           },
           {
             "label": "__gap",
             "offset": 0,
             "slot": "53",
             "type": "t_array(t_uint256)48_storage",
-            "contract": "PolygonAccessControlUpgradeable",
-            "src": "contracts/v2/lib/PolygonAccessControlUpgradeable.sol:244"
+            "contract": "FirechainAccessControlUpgradeable",
+            "src": "contracts/v2/lib/FirechainAccessControlUpgradeable.sol:244"
           },
           {
             "label": "_gap",
@@ -2062,120 +2062,120 @@
             "offset": 0,
             "slot": "126",
             "type": "t_uint32",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:170"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:170"
           },
           {
             "label": "rollupTypeMap",
             "offset": 0,
             "slot": "127",
             "type": "t_mapping(t_uint32,t_struct(RollupType)3613_storage)",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:173"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:173"
           },
           {
             "label": "rollupCount",
             "offset": 0,
             "slot": "128",
             "type": "t_uint32",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:176"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:176"
           },
           {
             "label": "rollupIDToRollupData",
             "offset": 0,
             "slot": "129",
             "type": "t_mapping(t_uint32,t_struct(RollupData)3655_storage)",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:179"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:179"
           },
           {
             "label": "rollupAddressToID",
             "offset": 0,
             "slot": "130",
             "type": "t_mapping(t_address,t_uint32)",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:182"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:182"
           },
           {
             "label": "chainIDToRollupID",
             "offset": 0,
             "slot": "131",
             "type": "t_mapping(t_uint64,t_uint32)",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:186"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:186"
           },
           {
             "label": "totalSequencedBatches",
             "offset": 0,
             "slot": "132",
             "type": "t_uint64",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:189"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:189"
           },
           {
             "label": "totalVerifiedBatches",
             "offset": 8,
             "slot": "132",
             "type": "t_uint64",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:192"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:192"
           },
           {
             "label": "lastAggregationTimestamp",
             "offset": 16,
             "slot": "132",
             "type": "t_uint64",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:195"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:195"
           },
           {
             "label": "trustedAggregatorTimeout",
             "offset": 24,
             "slot": "132",
             "type": "t_uint64",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:199"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:199"
           },
           {
             "label": "pendingStateTimeout",
             "offset": 0,
             "slot": "133",
             "type": "t_uint64",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:202"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:202"
           },
           {
             "label": "verifyBatchTimeTarget",
             "offset": 8,
             "slot": "133",
             "type": "t_uint64",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:206"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:206"
           },
           {
             "label": "multiplierBatchFee",
             "offset": 16,
             "slot": "133",
             "type": "t_uint16",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:209"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:209"
           },
           {
             "label": "_batchFee",
             "offset": 0,
             "slot": "134",
             "type": "t_uint256",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:213"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:213"
           },
           {
             "label": "lastDeactivatedEmergencyStateTimestamp",
             "offset": 0,
             "slot": "135",
             "type": "t_uint64",
-            "contract": "PolygonRollupManager",
-            "src": "contracts/v2/PolygonRollupManager.sol:216"
+            "contract": "FirechainRollupManager",
+            "src": "contracts/v2/FirechainRollupManager.sol:216"
           }
         ],
         "types": {
@@ -2203,8 +2203,8 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IPolygonRollupBase)6982": {
-            "label": "contract IPolygonRollupBase",
+          "t_contract(IFirechainRollupBase)6982": {
+            "label": "contract IFirechainRollupBase",
             "numberOfBytes": "20"
           },
           "t_contract(IVerifierRollup)3495": {
@@ -2220,7 +2220,7 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_bytes32,t_struct(RoleData)7463_storage)": {
-            "label": "mapping(bytes32 => struct PolygonAccessControlUpgradeable.RoleData)",
+            "label": "mapping(bytes32 => struct FirechainAccessControlUpgradeable.RoleData)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint256,t_struct(PendingState)7344_storage)": {
@@ -2228,11 +2228,11 @@
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint32,t_struct(RollupData)3655_storage)": {
-            "label": "mapping(uint32 => struct PolygonRollupManager.RollupData)",
+            "label": "mapping(uint32 => struct FirechainRollupManager.RollupData)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint32,t_struct(RollupType)3613_storage)": {
-            "label": "mapping(uint32 => struct PolygonRollupManager.RollupType)",
+            "label": "mapping(uint32 => struct FirechainRollupManager.RollupType)",
             "numberOfBytes": "32"
           },
           "t_mapping(t_uint64,t_bytes32)": {
@@ -2282,7 +2282,7 @@
             "numberOfBytes": "96"
           },
           "t_struct(RoleData)7463_storage": {
-            "label": "struct PolygonAccessControlUpgradeable.RoleData",
+            "label": "struct FirechainAccessControlUpgradeable.RoleData",
             "members": [
               {
                 "label": "members",
@@ -2300,11 +2300,11 @@
             "numberOfBytes": "64"
           },
           "t_struct(RollupData)3655_storage": {
-            "label": "struct PolygonRollupManager.RollupData",
+            "label": "struct FirechainRollupManager.RollupData",
             "members": [
               {
                 "label": "rollupContract",
-                "type": "t_contract(IPolygonRollupBase)6982",
+                "type": "t_contract(IFirechainRollupBase)6982",
                 "offset": 0,
                 "slot": "0"
               },
@@ -2396,7 +2396,7 @@
             "numberOfBytes": "256"
           },
           "t_struct(RollupType)3613_storage": {
-            "label": "struct PolygonRollupManager.RollupType",
+            "label": "struct FirechainRollupManager.RollupType",
             "members": [
               {
                 "label": "consensusImplementation",

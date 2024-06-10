@@ -7,7 +7,7 @@ import fs = require("fs");
 import * as dotenv from "dotenv";
 dotenv.config({path: path.resolve(__dirname, "../../../.env")});
 import {ethers, upgrades} from "hardhat";
-import {PolygonRollupManager, PolygonZkEVMTimelock} from "../../../typechain-types";
+import {FirechainRollupManager, FirechainZkEVMTimelock} from "../../../typechain-types";
 
 import {takeSnapshot, time, reset, setBalance, setStorageAt} from "@nomicfoundation/hardhat-network-helpers";
 
@@ -31,23 +31,23 @@ async function main() {
     const multisigSigner = await ethers.getSigner(timelockMultisig as any);
     await setBalance(timelockMultisig, 100n ** 18n);
 
-    const timelockContractFactory = await ethers.getContractFactory("PolygonZkEVMTimelock");
+    const timelockContractFactory = await ethers.getContractFactory("FirechainZkEVMTimelock");
     const timelockContract = (await timelockContractFactory.attach(
         deployOutputParameters.timelockContractAddress
-    )) as PolygonZkEVMTimelock;
+    )) as FirechainZkEVMTimelock;
 
     const timelockDelay = await timelockContract.getMinDelay();
 
-    const polygonZkEVMFactory = await ethers.getContractFactory("PolygonZkEVM");
-    const polygonZkEVMContract = (await polygonZkEVMFactory.attach(
-        deployOutputParameters.polygonZkEVMAddress
-    )) as PolygonZkEVM;
+    const firechainZkEVMFactory = await ethers.getContractFactory("FirechainZkEVM");
+    const firechainZkEVMContract = (await firechainZkEVMFactory.attach(
+        deployOutputParameters.firechainZkEVMAddress
+    )) as FirechainZkEVM;
 
-    const lastBatchSequenced = await polygonZkEVMContract.lastBatchSequenced();
+    const lastBatchSequenced = await firechainZkEVMContract.lastBatchSequenced();
 
-    await setStorageAt(polygonZkEVMContract.target, 116, lastBatchSequenced);
+    await setStorageAt(firechainZkEVMContract.target, 116, lastBatchSequenced);
 
-    const lastBatchVerified = await polygonZkEVMContract.lastVerifiedBatch();
+    const lastBatchVerified = await firechainZkEVMContract.lastVerifiedBatch();
     console.log({lastBatchSequenced});
     console.log({lastBatchVerified});
 
@@ -63,10 +63,10 @@ async function main() {
 
     const receipt = await (await multisigSigner.sendTransaction(txUpgrade)).wait();
 
-    const RollupMangerFactory = await ethers.getContractFactory("PolygonRollupManager");
+    const RollupMangerFactory = await ethers.getContractFactory("FirechainRollupManager");
     const rollupManager = (await RollupMangerFactory.attach(
-        deployOutputParameters.polygonZkEVMAddress
-    )) as PolygonRollupManager;
+        deployOutputParameters.firechainZkEVMAddress
+    )) as FirechainRollupManager;
 
     expect(await rollupManager.rollupCount()).to.be.equal(1);
 
@@ -106,7 +106,7 @@ async function main() {
     const tiemelockSigner = await ethers.getSigner(deployOutputParameters.timelockContractAddress as any);
     await setBalance(deployOutputParameters.timelockContractAddress, 100n ** 18n);
     const txUpdateRollup = await rollupManager.connect(tiemelockSigner).updateRollup(
-        upgradeOutput.newPolygonZKEVM, //new poylgon zkevm
+        upgradeOutput.newFirechainZKEVM, //new poylgon zkevm
         1, // new rollupTypeID
         "0x" // upgradeData
     );
@@ -114,7 +114,7 @@ async function main() {
     const receiptUpdateRollup = (await txUpdateRollup.wait()) as any;
 
     const rollupDataFinal2 = await rollupManager.rollupIDToRollupData(2);
-    //expect(rollupDataFinal2.rollupContract).to.be.equal(upgradeOutput.newPolygonZKEVM);
+    //expect(rollupDataFinal2.rollupContract).to.be.equal(upgradeOutput.newFirechainZKEVM);
     expect(rollupDataFinal2.chainID).to.be.equal(chainID);
     expect(rollupDataFinal2.verifier).to.be.equal(verifierAddress);
     expect(rollupDataFinal2.forkID).to.be.equal(7);
@@ -127,7 +127,7 @@ async function main() {
     expect(rollupDataFinal2.rollupCompatibilityID).to.be.equal(0);
 
     const rollupDataFinal = await rollupManager.rollupIDToRollupData(1);
-    expect(rollupDataFinal.rollupContract).to.be.equal(upgradeOutput.newPolygonZKEVM);
+    expect(rollupDataFinal.rollupContract).to.be.equal(upgradeOutput.newFirechainZKEVM);
     expect(rollupDataFinal.chainID).to.be.equal(1101);
     expect(rollupDataFinal.verifier).to.be.equal(verifierAddress);
     expect(rollupDataFinal.forkID).to.be.equal(7);

@@ -1,26 +1,26 @@
 # zkevm-contracts
 
-Smart contract implementation which will be used by the polygon zkevm
+Smart contract implementation which will be used by the Firechain zkevm
 
-[![Main CI](https://github.com/0xPolygonHermez/zkevm-contracts/actions/workflows/main.yml/badge.svg)](https://github.com/0xPolygonHermez/zkevm-contracts/actions/workflows/main.yml)
+[![Main CI](https://github.com/firechainZkevm/zkevm-contracts/actions/workflows/main.yml/badge.svg)](https://github.com/firechainZkevm/zkevm-contracts/actions/workflows/main.yml)
 
 ## Mainnet Contracts:
 
 | Contract Name                | Address                                                                                                               |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| PolygonRollupManager         | [0x5132A183E9F3CB7C848b0AAC5Ae0c4f0491B7aB2](https://etherscan.io/address/0x5132A183E9F3CB7C848b0AAC5Ae0c4f0491B7aB2) |
-| PolygonZkEVMBridgeV2         | [0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe](https://etherscan.io/address/0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe) |
-| PolygonZkEVMGlobalExitRootV2 | [0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb](https://etherscan.io/address/0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb) |
+| FirechainRollupManager         | [0x5132A183E9F3CB7C848b0AAC5Ae0c4f0491B7aB2](https://etherscan.io/address/0x5132A183E9F3CB7C848b0AAC5Ae0c4f0491B7aB2) |
+| FirechainZkEVMBridgeV2         | [0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe](https://etherscan.io/address/0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe) |
+| FirechainZkEVMGlobalExitRootV2 | [0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb](https://etherscan.io/address/0x580bda1e7A0CFAe92Fa7F6c20A3794F169CE3CFb) |
 | FflonkVerifier               | [0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9](https://etherscan.io/address/0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9) |
-| PolygonZkEVMDeployer         | [0xCB19eDdE626906eB1EE52357a27F62dd519608C2](https://etherscan.io/address/0xCB19eDdE626906eB1EE52357a27F62dd519608C2) |
-| PolygonZkEVMTimelock         | [0xEf1462451C30Ea7aD8555386226059Fe837CA4EF](https://etherscan.io/address/0xEf1462451C30Ea7aD8555386226059Fe837CA4EF) |
+| FirechainZkEVMDeployer         | [0xCB19eDdE626906eB1EE52357a27F62dd519608C2](https://etherscan.io/address/0xCB19eDdE626906eB1EE52357a27F62dd519608C2) |
+| FirechainZkEVMTimelock         | [0xEf1462451C30Ea7aD8555386226059Fe837CA4EF](https://etherscan.io/address/0xEf1462451C30Ea7aD8555386226059Fe837CA4EF) |
 
 ## zkEVM Contracts:
 
 | Contract Name        | Address                                                                                                                        |
 | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| PolygonZkEVMBridgeV2 | [0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe](https://zkevm.polygonscan.com/address/0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe) |
-| PolygonZkEVMTimelock | [0xBBa0935Fa93Eb23de7990b47F0D96a8f75766d13](https://zkevm.polygonscan.com/address/0xBBa0935Fa93Eb23de7990b47F0D96a8f75766d13) |
+| FirechainZkEVMBridgeV2 | [0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe](https://zkevm.firescan.io/address/0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe) |
+| FirechainZkEVMTimelock | [0xBBa0935Fa93Eb23de7990b47F0D96a8f75766d13](https://zkevm.firescan.io/address/0xBBa0935Fa93Eb23de7990b47F0D96a8f75766d13) |
 
 ## Requirements
 
@@ -57,10 +57,10 @@ Or if using new docker-compose version
 npm run dockerv2:contracts
 ```
 
-A new docker `hermeznetwork/geth-zkevm-contracts` will be created
+A new docker `zkevmnetwork/geth-zkevm-contracts` will be created
 This docker will contain a geth node with the deployed contracts
 The deployment output can be found in: `docker/deploymentOutput/deploy_output.json`
-To run the docker you can use: `docker run -p 8545:8545 hermeznetwork/geth-zkevm-contracts`
+To run the docker you can use: `docker run -p 8545:8545 zkevmnetwork/geth-zkevm-contracts`
 
 ## Note
 

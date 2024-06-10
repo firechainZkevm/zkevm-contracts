@@ -9,6 +9,6 @@ mkdir docker/deploymentOutput
 mv deployment/testV1ToV2/deploy_output.json docker/deploymentOutput
 mv deployment/testV1ToV2/genesis.json docker/deploymentOutput
 DEV_PERIOD=1 docker compose -f docker/docker-compose.yml down
-docker build -t hermeznetwork/geth-zkevm-contracts -f docker/Dockerfile .
+docker build -t zkevmnetwork/geth-zkevm-contracts -f docker/Dockerfile .
 # Let it readable for the multiplatform build coming later!
 sudo chmod -R go+rxw docker/gethData

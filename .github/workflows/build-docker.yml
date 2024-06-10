@@ -55,6 +55,6 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: hermeznetwork/geth-zkevm-contracts:1.5-integration
+          tags: zkevmnetwork/geth-zkevm-contracts:1.5-integration
           file: docker/Dockerfile
           context: .

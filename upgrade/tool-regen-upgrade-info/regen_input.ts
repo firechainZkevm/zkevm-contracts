@@ -11,10 +11,10 @@ async function main() {
     // load input file
 
     // Load implementation contract
-    const PolygonZkEVMFactory = (await ethers.getContractFactory(input.implementationName)) as any;
+    const FirechainZkEVMFactory = (await ethers.getContractFactory(input.implementationName)) as any;
 
     // Import OZ upgrades
-    await upgrades.forceImport(input.proxyAddress, PolygonZkEVMFactory, {
+    await upgrades.forceImport(input.proxyAddress, FirechainZkEVMFactory, {
         kind: "transparent",
         constructorArgs: input.constructorArgs,
     });

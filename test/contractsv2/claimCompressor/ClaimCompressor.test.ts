@@ -3,11 +3,11 @@ import {ethers, upgrades} from "hardhat";
 import {
     VerifierRollupHelperMock,
     ERC20PermitMock,
-    PolygonRollupManagerMock,
-    PolygonZkEVMGlobalExitRoot,
-    PolygonZkEVMBridgeV2,
-    PolygonZkEVMV2,
-    PolygonRollupBase,
+    FirechainRollupManagerMock,
+    FirechainZkEVMGlobalExitRoot,
+    FirechainZkEVMBridgeV2,
+    FirechainZkEVMV2,
+    FirechainRollupBase,
     TokenWrapped,
     ClaimCompressor,
     BridgeReceiverMock,
@@ -26,9 +26,9 @@ describe("Claim Compressor Contract", () => {
 
     let claimCompressor: ClaimCompressor;
     let bridgeReceiverMock: BridgeReceiverMock;
-    let polygonZkEVMBridgeContract: PolygonZkEVMBridgeV2;
+    let firechainZkEVMBridgeContract: FirechainZkEVMBridgeV2;
     let polTokenContract: ERC20PermitMock;
-    let polygonZkEVMGlobalExitRoot: PolygonZkEVMGlobalExitRoot;
+    let firechainZkEVMGlobalExitRoot: FirechainZkEVMGlobalExitRoot;
 
     const networkID = 1;
 
@@ -66,25 +66,25 @@ describe("Claim Compressor Contract", () => {
         await claimCompressor.waitForDeployment();
 
         // Deploy bridge contracts
-        // deploy PolygonZkEVMBridge
-        const polygonZkEVMBridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2");
-        polygonZkEVMBridgeContract = (await upgrades.deployProxy(polygonZkEVMBridgeFactory, [], {
+        // deploy FirechainZkEVMBridge
+        const firechainZkEVMBridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2");
+        firechainZkEVMBridgeContract = (await upgrades.deployProxy(firechainZkEVMBridgeFactory, [], {
             initializer: false,
             unsafeAllow: ["constructor"],
-        })) as unknown as PolygonZkEVMBridgeV2;
+        })) as unknown as FirechainZkEVMBridgeV2;
 
         // deploy global exit root manager
-        const PolygonZkEVMGlobalExitRootFactory = await ethers.getContractFactory("PolygonZkEVMGlobalExitRoot");
-        polygonZkEVMGlobalExitRoot = await PolygonZkEVMGlobalExitRootFactory.deploy(
+        const FirechainZkEVMGlobalExitRootFactory = await ethers.getContractFactory("FirechainZkEVMGlobalExitRoot");
+        firechainZkEVMGlobalExitRoot = await FirechainZkEVMGlobalExitRootFactory.deploy(
             rollupManager.address,
-            polygonZkEVMBridgeContract.target
+            firechainZkEVMBridgeContract.target
         );
 
-        await polygonZkEVMBridgeContract.initialize(
+        await firechainZkEVMBridgeContract.initialize(
             networkID,
             ethers.ZeroAddress, // zero for ether
             ethers.ZeroAddress, // zero for ether
-            polygonZkEVMGlobalExitRoot.target,
+            firechainZkEVMGlobalExitRoot.target,
             rollupManager.address,
             "0x"
         );
@@ -100,7 +100,7 @@ describe("Claim Compressor Contract", () => {
     });
 
     it("should check random values", async () => {
-        const BridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2");
+        const BridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2");
 
         // compute root merkle tree in Js
         const height = 32;
@@ -224,10 +224,10 @@ describe("Claim Compressor Contract", () => {
     });
 
     it("should test against bridge", async () => {
-        const BridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2");
+        const BridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2");
 
         const ClaimCompressorFactory = await ethers.getContractFactory("ClaimCompressor");
-        const realClaimCompressor = await ClaimCompressorFactory.deploy(polygonZkEVMBridgeContract.target, networkID);
+        const realClaimCompressor = await ClaimCompressorFactory.deploy(firechainZkEVMBridgeContract.target, networkID);
         await realClaimCompressor.waitForDeployment();
 
         // compute root merkle tree in Js
@@ -269,24 +269,24 @@ describe("Claim Compressor Contract", () => {
             });
         }
 
-        const rollupExitRoot = await polygonZkEVMGlobalExitRoot.lastRollupExitRoot();
+        const rollupExitRoot = await firechainZkEVMGlobalExitRoot.lastRollupExitRoot();
         const mainnetExitRoot = merkleTreeLocal.getRoot();
 
         // add rollup Merkle root
-        await ethers.provider.send("hardhat_impersonateAccount", [polygonZkEVMBridgeContract.target]);
-        const bridgemoCK = await ethers.getSigner(polygonZkEVMBridgeContract.target as any);
+        await ethers.provider.send("hardhat_impersonateAccount", [firechainZkEVMBridgeContract.target]);
+        const bridgemoCK = await ethers.getSigner(firechainZkEVMBridgeContract.target as any);
 
-        await expect(polygonZkEVMGlobalExitRoot.connect(bridgemoCK).updateExitRoot(mainnetExitRoot, {gasPrice: 0}))
-            .to.emit(polygonZkEVMGlobalExitRoot, "UpdateGlobalExitRoot")
+        await expect(firechainZkEVMGlobalExitRoot.connect(bridgemoCK).updateExitRoot(mainnetExitRoot, {gasPrice: 0}))
+            .to.emit(firechainZkEVMGlobalExitRoot, "UpdateGlobalExitRoot")
             .withArgs(mainnetExitRoot, rollupExitRoot);
 
         // check roots
-        const rollupExitRootSC = await polygonZkEVMGlobalExitRoot.lastRollupExitRoot();
+        const rollupExitRootSC = await firechainZkEVMGlobalExitRoot.lastRollupExitRoot();
         expect(rollupExitRootSC).to.be.equal(rollupExitRoot);
-        const mainnetExitRootSC = await polygonZkEVMGlobalExitRoot.lastMainnetExitRoot();
+        const mainnetExitRootSC = await firechainZkEVMGlobalExitRoot.lastMainnetExitRoot();
         expect(mainnetExitRootSC).to.be.equal(mainnetExitRoot);
         const computedGlobalExitRoot = calculateGlobalExitRoot(mainnetExitRoot, rollupExitRootSC);
-        expect(computedGlobalExitRoot).to.be.equal(await polygonZkEVMGlobalExitRoot.getLastGlobalExitRoot());
+        expect(computedGlobalExitRoot).to.be.equal(await firechainZkEVMGlobalExitRoot.getLastGlobalExitRoot());
 
         // Merkle proof local
         const proofLocalFirst = merkleTreeLocal.getProofTreeByIndex(0);
@@ -321,7 +321,7 @@ describe("Claim Compressor Contract", () => {
                 sequenceForcedStructs.push(sequenceForced);
 
                 if (currentLeaf.leafType == 0) {
-                    await polygonZkEVMBridgeContract.claimAsset.estimateGas(
+                    await firechainZkEVMBridgeContract.claimAsset.estimateGas(
                         proofLocal,
                         proofLocalFirst,
                         globalIndex,
@@ -335,7 +335,7 @@ describe("Claim Compressor Contract", () => {
                         currentLeaf.metadata
                     );
                 } else {
-                    await polygonZkEVMBridgeContract.claimMessage.estimateGas(
+                    await firechainZkEVMBridgeContract.claimMessage.estimateGas(
                         proofLocal,
                         proofLocalFirst,
                         globalIndex,
@@ -368,7 +368,7 @@ describe("Claim Compressor Contract", () => {
             let currentSequenceForcedStructs = 0;
             for (let k = 0; k < receipt?.logs.length; k++) {
                 const currentLog = receipt?.logs[k];
-                if (currentLog?.address != polygonZkEVMBridgeContract.target) {
+                if (currentLog?.address != firechainZkEVMBridgeContract.target) {
                     continue;
                 } else {
                     const parsedLog = BridgeFactory.interface.parseLog(currentLog);
@@ -396,7 +396,7 @@ describe("Claim Compressor Contract", () => {
         }
     }).timeout(1000000);
     it("should check Compression", async () => {
-        const BridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2");
+        const BridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2");
 
         const originNetwork = networkIDMainnet;
         const tokenAddress = ethers.hexlify(ethers.randomBytes(20));

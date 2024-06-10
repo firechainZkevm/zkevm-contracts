@@ -22,7 +22,7 @@ process.env.MNEMONIC = argv.test ? DEFAULT_MNEMONIC : process.env.MNEMONIC;
 import {ethers, upgrades} from "hardhat";
 import {MemDB, ZkEVMDB, getPoseidon, smtUtils} from "@0xpolygonhermez/zkevm-commonjs";
 
-import {deployPolygonZkEVMDeployer, create2Deployment, getCreate2Address} from "../helpers/deployment-helpers";
+import {deployFirechainZkEVMDeployer, create2Deployment, getCreate2Address} from "../helpers/deployment-helpers";
 import {ProxyAdmin} from "../../typechain-types";
 import {Addressable} from "ethers";
 
@@ -128,8 +128,8 @@ async function main() {
     await ethers.provider.send("hardhat_setBalance", [initialZkEVMDeployerOwner, "0xffffffffffffffff"]); // 18 ethers aprox
     const deployer = await ethers.getSigner(initialZkEVMDeployerOwner);
 
-    // Deploy PolygonZkEVMDeployer if is not deployed already
-    const [zkEVMDeployerContract, keylessDeployer] = await deployPolygonZkEVMDeployer(
+    // Deploy FirechainZkEVMDeployer if is not deployed already
+    const [zkEVMDeployerContract, keylessDeployer] = await deployFirechainZkEVMDeployer(
         initialZkEVMDeployerOwner,
         deployer
     );
@@ -163,9 +163,9 @@ async function main() {
         finalProxyAdminAddress = proxyAdminAddress;
     }
 
-    // Deploy implementation PolygonZkEVMBridge
-    const polygonZkEVMBridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2", deployer);
-    const deployTransactionBridge = (await polygonZkEVMBridgeFactory.getDeployTransaction()).data;
+    // Deploy implementation FirechainZkEVMBridge
+    const firechainZkEVMBridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2", deployer);
+    const deployTransactionBridge = (await firechainZkEVMBridgeFactory.getDeployTransaction()).data;
     // Mandatory to override the gasLimit since the estimation with create are mess up D:
     const overrideGasLimit = BigInt(5500000);
     [bridgeImplementationAddress] = await create2Deployment(
@@ -199,7 +199,7 @@ async function main() {
         )
     ).data;
 
-    const dataCallProxy = polygonZkEVMBridgeFactory.interface.encodeFunctionData("initialize", [
+    const dataCallProxy = firechainZkEVMBridgeFactory.interface.encodeFunctionData("initialize", [
         networkIDL2,
         ethers.ZeroAddress, // gas token address
         0, // gas token network
@@ -222,19 +222,19 @@ async function main() {
     }
 
     // Import OZ manifest the deployed contracts, its enough to import just the proyx, the rest are imported automatically ( admin/impl)
-    await upgrades.forceImport(proxyBridgeAddress as string, polygonZkEVMBridgeFactory, "transparent" as any);
+    await upgrades.forceImport(proxyBridgeAddress as string, firechainZkEVMBridgeFactory, "transparent" as any);
 
     /*
      *Deployment Global exit root manager
      */
-    const PolygonZkEVMGlobalExitRootL2Factory = await ethers.getContractFactory(
-        "PolygonZkEVMGlobalExitRootL2",
+    const FirechainZkEVMGlobalExitRootL2Factory = await ethers.getContractFactory(
+        "FirechainZkEVMGlobalExitRootL2",
         deployer
     );
-    let polygonZkEVMGlobalExitRootL2;
+    let firechainZkEVMGlobalExitRootL2;
     for (let i = 0; i < attemptsDeployProxy; i++) {
         try {
-            polygonZkEVMGlobalExitRootL2 = await upgrades.deployProxy(PolygonZkEVMGlobalExitRootL2Factory, [], {
+            firechainZkEVMGlobalExitRootL2 = await upgrades.deployProxy(FirechainZkEVMGlobalExitRootL2Factory, [], {
                 initializer: false,
                 constructorArgs: [finalBridgeProxyAddress],
                 unsafeAllow: ["constructor", "state-variable-immutable"],
@@ -242,22 +242,22 @@ async function main() {
             break;
         } catch (error: any) {
             console.log(`attempt ${i}`);
-            console.log("upgrades.deployProxy of polygonZkEVMGlobalExitRootL2 ", error.message);
+            console.log("upgrades.deployProxy of firechainZkEVMGlobalExitRootL2 ", error.message);
         }
 
         // reach limits of attempts
         if (i + 1 === attemptsDeployProxy) {
-            throw new Error("polygonZkEVMGlobalExitRootL2 contract has not been deployed");
+            throw new Error("firechainZkEVMGlobalExitRootL2 contract has not been deployed");
         }
     }
 
     // Assert admin address
-    expect(await upgrades.erc1967.getAdminAddress(polygonZkEVMGlobalExitRootL2?.target as string)).to.be.equal(
+    expect(await upgrades.erc1967.getAdminAddress(firechainZkEVMGlobalExitRootL2?.target as string)).to.be.equal(
         proxyAdminAddress
     );
     expect(await upgrades.erc1967.getAdminAddress(proxyBridgeAddress as string)).to.be.equal(proxyAdminAddress);
 
-    const timelockContractFactory = await ethers.getContractFactory("PolygonZkEVMTimelock", deployer);
+    const timelockContractFactory = await ethers.getContractFactory("FirechainZkEVMTimelock", deployer);
     const timelockContract = await timelockContractFactory.deploy(
         minDelayTimelock,
         [timelockAdminAddress],
@@ -279,7 +279,7 @@ async function main() {
     // ZKEVMDeployer
     const zkEVMDeployerInfo = await getAddressInfo(zkEVMDeployerContract.target);
     genesis.push({
-        contractName: "PolygonZkEVMDeployer",
+        contractName: "FirechainZkEVMDeployer",
         balance: "0",
         nonce: zkEVMDeployerInfo.nonce.toString(),
         address: finalzkEVMDeployerAdress,
@@ -301,7 +301,7 @@ async function main() {
     // Bridge implementation
     const bridgeImplementationInfo = await getAddressInfo(bridgeImplementationAddress as string);
     genesis.push({
-        contractName: "PolygonZkEVMBridge implementation",
+        contractName: "FirechainZkEVMBridge implementation",
         balance: "0",
         nonce: bridgeImplementationInfo.nonce.toString(),
         address: finalBridgeImplAddress,
@@ -316,7 +316,7 @@ async function main() {
     bridgeProxyInfo.storage[_IMPLEMENTATION_SLOT] = ethers.zeroPadValue(finalBridgeImplAddress as string, 32);
 
     genesis.push({
-        contractName: "PolygonZkEVMBridge proxy",
+        contractName: "FirechainZkEVMBridge proxy",
         balance: balanceBrige,
         nonce: bridgeProxyInfo.nonce.toString(),
         address: finalBridgeProxyAddress,
@@ -324,9 +324,9 @@ async function main() {
         storage: bridgeProxyInfo.storage,
     });
 
-    // polygonZkEVMGlobalExitRootL2 implementation
+    // firechainZkEVMGlobalExitRootL2 implementation
     const implGlobalExitRootL2 = await upgrades.erc1967.getImplementationAddress(
-        polygonZkEVMGlobalExitRootL2?.target as string
+        firechainZkEVMGlobalExitRootL2?.target as string
     );
     const implGlobalExitRootL2Info = await getAddressInfo(implGlobalExitRootL2);
 
@@ -335,7 +335,7 @@ async function main() {
     }
 
     genesis.push({
-        contractName: "PolygonZkEVMGlobalExitRootL2 implementation",
+        contractName: "FirechainZkEVMGlobalExitRootL2 implementation",
         balance: "0",
         nonce: implGlobalExitRootL2Info.nonce.toString(),
         address: finalGlobalExitRootL2ImplAddress,
@@ -343,8 +343,8 @@ async function main() {
         // storage: implGlobalExitRootL2Info.storage, , implementation do not have storage
     });
 
-    // polygonZkEVMGlobalExitRootL2 proxy
-    const proxyGlobalExitRootL2Info = await getAddressInfo(polygonZkEVMGlobalExitRootL2?.target as string);
+    // firechainZkEVMGlobalExitRootL2 proxy
+    const proxyGlobalExitRootL2Info = await getAddressInfo(firechainZkEVMGlobalExitRootL2?.target as string);
 
     proxyGlobalExitRootL2Info.storage[_ADMIN_SLOT] = ethers.zeroPadValue(finalProxyAdminAddress as string, 32);
     proxyGlobalExitRootL2Info.storage[_IMPLEMENTATION_SLOT] = ethers.zeroPadValue(
@@ -353,7 +353,7 @@ async function main() {
     );
 
     genesis.push({
-        contractName: "PolygonZkEVMGlobalExitRootL2 proxy",
+        contractName: "FirechainZkEVMGlobalExitRootL2 proxy",
         balance: "0",
         nonce: proxyGlobalExitRootL2Info.nonce.toString(),
         address: finalGlobalExitRootL2ProxyAddress,
@@ -405,7 +405,7 @@ async function main() {
     }
 
     genesis.push({
-        contractName: "PolygonZkEVMTimelock",
+        contractName: "FirechainZkEVMTimelock",
         balance: "0",
         nonce: timelockInfo.nonce.toString(),
         address: finalTimelockContractAdress,

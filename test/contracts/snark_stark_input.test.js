@@ -3,8 +3,8 @@ const { ethers, upgrades } = require('hardhat');
 
 const { contractUtils } = require('@0xpolygonhermez/zkevm-commonjs');
 
-describe('Polygon ZK-EVM snark stark input test', () => {
-    let polygonZkEVMContract;
+describe('Firechain ZK-EVM snark stark input test', () => {
+    let firechainZkEVMContract;
     const genesisRoot = '0x0000000000000000000000000000000000000000000000000000000000000001';
     let randomSigner;
 
@@ -19,9 +19,9 @@ describe('Polygon ZK-EVM snark stark input test', () => {
         // load signers
         [randomSigner] = await ethers.getSigners();
 
-        // deploy PolygonZkEVMMock
-        const PolygonZkEVMFactory = await ethers.getContractFactory('PolygonZkEVMMock');
-        polygonZkEVMContract = await upgrades.deployProxy(PolygonZkEVMFactory, [], {
+        // deploy FirechainZkEVMMock
+        const FirechainZkEVMFactory = await ethers.getContractFactory('FirechainZkEVMMock');
+        firechainZkEVMContract = await upgrades.deployProxy(FirechainZkEVMFactory, [], {
             initializer: false,
             constructorArgs: [
                 randomSigner.address,
@@ -34,7 +34,7 @@ describe('Polygon ZK-EVM snark stark input test', () => {
             unsafeAllow: ['constructor', 'state-variable-immutable'],
         });
 
-        await polygonZkEVMContract.initialize(
+        await firechainZkEVMContract.initialize(
             {
                 admin: randomSigner.address,
                 trustedSequencer: randomSigner.address,
@@ -48,7 +48,7 @@ describe('Polygon ZK-EVM snark stark input test', () => {
             version,
         );
 
-        await polygonZkEVMContract.deployed();
+        await firechainZkEVMContract.deployed();
     });
 
     it('Check Accumulate input Hash', async () => {
@@ -66,7 +66,7 @@ describe('Polygon ZK-EVM snark stark input test', () => {
             timestamp,
             sequencerAddr,
         );
-        const accumulateInputHashSC = await polygonZkEVMContract.calculateAccInputHash(
+        const accumulateInputHashSC = await firechainZkEVMContract.calculateAccInputHash(
             oldAccInputHash,
             batchL2Data,
             globalExitRoot,
@@ -77,7 +77,6 @@ describe('Polygon ZK-EVM snark stark input test', () => {
         expect(accumulateInputHashSC).to.be.equal(expectedStarkHashExecutor);
     });
     it('Check commonjs unit test', async () => {
-        // Unit test taken from https://github.com/0xPolygonHermez/zkevm-commonjs/blob/main/test/contract-utils.test.js#L16
         const oldStateRoot = '0x2dc4db4293af236cb329700be43f08ace740a05088f8c7654736871709687e90';
         const newStateRoot = '0xbff23fc2c168c033aaac77503ce18f958e9689d5cdaebb88c5524ce5c0319de3';
         const newLocalExitRoot = '0x0000000000000000000000000000000000000000000000000000000000000000';
@@ -91,9 +90,9 @@ describe('Polygon ZK-EVM snark stark input test', () => {
         const lastPendingStateConsolidated = 0;
         const sequencedTimestamp = 999;
         // set smart contract with correct parameters
-        await polygonZkEVMContract.setStateRoot(oldStateRoot, oldNumBatch);
-        await polygonZkEVMContract.setSequencedBatches(newNumBatch, newAccInputHash, sequencedTimestamp, lastPendingStateConsolidated);
-        await polygonZkEVMContract.setSequencedBatch(1);
+        await firechainZkEVMContract.setStateRoot(oldStateRoot, oldNumBatch);
+        await firechainZkEVMContract.setSequencedBatches(newNumBatch, newAccInputHash, sequencedTimestamp, lastPendingStateConsolidated);
+        await firechainZkEVMContract.setSequencedBatch(1);
 
         await ethers.provider.send('hardhat_impersonateAccount', [aggregatorAddress]);
         const aggregator = await ethers.getSigner(aggregatorAddress);
@@ -104,7 +103,7 @@ describe('Polygon ZK-EVM snark stark input test', () => {
 
         // Compute SC input
         const pendingStateNum = 0;
-        const inputSnarkSC = await polygonZkEVMContract.connect(aggregator).getNextSnarkInput(
+        const inputSnarkSC = await firechainZkEVMContract.connect(aggregator).getNextSnarkInput(
             pendingStateNum,
             oldNumBatch,
             newNumBatch,

@@ -24,7 +24,7 @@ async function main() {
         "rollupAddress",
         "newRollupTypeID",
         "upgradeData",
-        "polygonRollupManagerAddress",
+        "firechainRollupManagerAddress",
         "timelockDelay",
     ];
 
@@ -34,7 +34,7 @@ async function main() {
         }
     }
 
-    const {rollupAddress, newRollupTypeID, upgradeData, polygonRollupManagerAddress, timelockDelay} =
+    const {rollupAddress, newRollupTypeID, upgradeData, firechainRollupManagerAddress, timelockDelay} =
         addRollupParameters;
 
     const salt = addRollupParameters.timelockSalt || ethers.ZeroHash;
@@ -88,15 +88,15 @@ async function main() {
     console.log("Using with: ", deployer.address);
 
     // load timelock
-    const timelockContractFactory = await ethers.getContractFactory("PolygonZkEVMTimelock", deployer);
+    const timelockContractFactory = await ethers.getContractFactory("FirechainZkEVMTimelock", deployer);
 
     // Load Rollup manager
-    const PolgonRollupManagerFactory = await ethers.getContractFactory("PolygonRollupManager", deployer);
+    const FyrechainRollupManagerFactory = await ethers.getContractFactory("FirechainRollupManager", deployer);
 
     const operation = genOperation(
-        polygonRollupManagerAddress,
+        firechainRollupManagerAddress,
         0, // value
-        PolgonRollupManagerFactory.interface.encodeFunctionData("updateRollup", [
+        FyrechainRollupManagerFactory.interface.encodeFunctionData("updateRollup", [
             rollupAddress,
             newRollupTypeID,
             upgradeData,
@@ -140,7 +140,7 @@ async function main() {
         objectDecoded[currentParam.name] = timelockTx?.args[i];
 
         if (currentParam.name == "data") {
-            const decodedRollupManagerData = PolgonRollupManagerFactory.interface.parseTransaction({
+            const decodedRollupManagerData = FyrechainRollupManagerFactory.interface.parseTransaction({
                 data: timelockTx?.args[i],
             });
             const objectDecodedData = {};

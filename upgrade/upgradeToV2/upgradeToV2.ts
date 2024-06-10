@@ -7,7 +7,7 @@ import fs = require("fs");
 import * as dotenv from "dotenv";
 dotenv.config({path: path.resolve(__dirname, "../../.env")});
 import {ethers, upgrades} from "hardhat";
-import {PolygonZkEVM} from "../../typechain-types";
+import {FirechainZkEVM} from "../../typechain-types";
 
 const pathOutputJson = path.join(__dirname, "./upgrade_output.json");
 
@@ -38,9 +38,9 @@ async function main() {
      * Check that every necessary parameter is fullfilled
      */
     const mandatoryOutputParameters = [
-        "polygonZkEVMBridgeAddress",
-        "polygonZkEVMGlobalExitRootAddress",
-        "polygonZkEVMAddress",
+        "firechainZkEVMBridgeAddress",
+        "firechainZkEVMGlobalExitRootAddress",
+        "firechainZkEVMAddress",
         "timelockContractAddress",
     ];
 
@@ -50,21 +50,21 @@ async function main() {
         }
     }
 
-    const currentBridgeAddress = deployOutputParameters.polygonZkEVMBridgeAddress;
-    const currentGlobalExitRootAddress = deployOutputParameters.polygonZkEVMGlobalExitRootAddress;
-    const currentPolygonZkEVMAddress = deployOutputParameters.polygonZkEVMAddress;
+    const currentBridgeAddress = deployOutputParameters.firechainZkEVMBridgeAddress;
+    const currentGlobalExitRootAddress = deployOutputParameters.firechainZkEVMGlobalExitRootAddress;
+    const currentFirechainZkEVMAddress = deployOutputParameters.firechainZkEVMAddress;
     const currentTimelockAddress = deployOutputParameters.timelockContractAddress;
 
     // Load onchain parameters
-    const polygonZkEVMFactory = await ethers.getContractFactory("PolygonZkEVM");
-    const polygonZkEVMContract = (await polygonZkEVMFactory.attach(currentPolygonZkEVMAddress)) as PolygonZkEVM;
+    const firechainZkEVMFactory = await ethers.getContractFactory("FirechainZkEVM");
+    const firechainZkEVMContract = (await firechainZkEVMFactory.attach(currentFirechainZkEVMAddress)) as FirechainZkEVM;
 
-    const admin = await polygonZkEVMContract.admin();
-    const trustedAggregator = await polygonZkEVMContract.trustedAggregator();
-    const trustedAggregatorTimeout = await polygonZkEVMContract.trustedAggregatorTimeout();
-    const pendingStateTimeout = await polygonZkEVMContract.pendingStateTimeout();
-    const chainID = await polygonZkEVMContract.chainID();
-    const emergencyCouncilAddress = await polygonZkEVMContract.owner();
+    const admin = await firechainZkEVMContract.admin();
+    const trustedAggregator = await firechainZkEVMContract.trustedAggregator();
+    const trustedAggregatorTimeout = await firechainZkEVMContract.trustedAggregatorTimeout();
+    const pendingStateTimeout = await firechainZkEVMContract.pendingStateTimeout();
+    const chainID = await firechainZkEVMContract.chainID();
+    const emergencyCouncilAddress = await firechainZkEVMContract.owner();
 
     console.log(
         {admin},
@@ -126,7 +126,7 @@ async function main() {
     const proxyAdmin = await upgrades.admin.getInstance();
 
     // Assert correct admin
-    expect(await upgrades.erc1967.getAdminAddress(currentPolygonZkEVMAddress as string)).to.be.equal(proxyAdmin.target);
+    expect(await upgrades.erc1967.getAdminAddress(currentFirechainZkEVMAddress as string)).to.be.equal(proxyAdmin.target);
 
     // deploy new verifier
     let verifierContract;
@@ -144,19 +144,19 @@ async function main() {
     console.log(`npx hardhat verify ${verifierContract.target} --network ${process.env.HARDHAT_NETWORK}`);
 
     // load timelock
-    const timelockContractFactory = await ethers.getContractFactory("PolygonZkEVMTimelock", deployer);
+    const timelockContractFactory = await ethers.getContractFactory("FirechainZkEVMTimelock", deployer);
 
     // prapare upgrades
 
-    // Prepare Upgrade PolygonZkEVMBridge
-    const polygonZkEVMBridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2", deployer);
+    // Prepare Upgrade FirechainZkEVMBridge
+    const firechainZkEVMBridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2", deployer);
 
-    const newBridgeImpl = await upgrades.prepareUpgrade(currentBridgeAddress, polygonZkEVMBridgeFactory, {
+    const newBridgeImpl = await upgrades.prepareUpgrade(currentBridgeAddress, firechainZkEVMBridgeFactory, {
         unsafeAllow: ["constructor"],
     });
 
     console.log("#######################\n");
-    console.log(`PolygonZkEVMBridge impl: ${newBridgeImpl}`);
+    console.log(`FirechainZkEVMBridge impl: ${newBridgeImpl}`);
 
     console.log("you can verify the new impl address with:");
     console.log(`npx hardhat verify ${newBridgeImpl} --network ${process.env.HARDHAT_NETWORK}`);
@@ -170,27 +170,27 @@ async function main() {
     );
 
     // prepare upgrade global exit root
-    // Prepare Upgrade  PolygonZkEVMGlobalExitRootV2
-    const polygonGlobalExitRootV2 = await ethers.getContractFactory("PolygonZkEVMGlobalExitRootV2", deployer);
+    // Prepare Upgrade  FirechainZkEVMGlobalExitRootV2
+    const firechainGlobalExitRootV2 = await ethers.getContractFactory("FirechainZkEVMGlobalExitRootV2", deployer);
 
     const newGlobalExitRoortImpl = await upgrades.prepareUpgrade(
         currentGlobalExitRootAddress,
-        polygonGlobalExitRootV2,
+        firechainGlobalExitRootV2,
         {
-            constructorArgs: [currentPolygonZkEVMAddress, currentBridgeAddress],
+            constructorArgs: [currentFirechainZkEVMAddress, currentBridgeAddress],
             unsafeAllow: ["constructor", "state-variable-immutable"],
         }
     );
 
     console.log("#######################\n");
-    console.log(`polygonGlobalExitRootV2 impl: ${newGlobalExitRoortImpl}`);
+    console.log(`firechainGlobalExitRootV2 impl: ${newGlobalExitRoortImpl}`);
 
     console.log("you can verify the new impl address with:");
     console.log(
         `npx hardhat verify --constructor-args upgrade/arguments.js ${newGlobalExitRoortImpl} --network ${process.env.HARDHAT_NETWORK}\n`
     );
     console.log("Copy the following constructor arguments on: upgrade/arguments.js \n", [
-        currentPolygonZkEVMAddress,
+        currentFirechainZkEVMAddress,
         currentBridgeAddress,
     ]);
 
@@ -204,60 +204,60 @@ async function main() {
 
     // Update current system to rollup manager
 
-    // deploy polygon zkEVM impl
-    const PolygonZkEVMV2ExistentFactory = await ethers.getContractFactory("PolygonZkEVMExistentEtrog");
-    const polygonZkEVMEtrogImpl = await PolygonZkEVMV2ExistentFactory.deploy(
+    // deploy firechain zkEVM impl
+    const FirechainZkEVMV2ExistentFactory = await ethers.getContractFactory("FirechainZkEVMExistentEtrog");
+    const firechainZkEVMEtrogImpl = await FirechainZkEVMV2ExistentFactory.deploy(
         currentGlobalExitRootAddress,
         polTokenAddress,
         currentBridgeAddress,
-        currentPolygonZkEVMAddress
+        currentFirechainZkEVMAddress
     );
-    await polygonZkEVMEtrogImpl.waitForDeployment();
+    await firechainZkEVMEtrogImpl.waitForDeployment();
 
     console.log("#######################\n");
-    console.log(`new PolygonZkEVM impl: ${polygonZkEVMEtrogImpl.target}`);
+    console.log(`new FirechainZkEVM impl: ${firechainZkEVMEtrogImpl.target}`);
 
     console.log("you can verify the new impl address with:");
     console.log(
-        `npx hardhat verify --constructor-args upgrade/arguments.js ${polygonZkEVMEtrogImpl.target} --network ${process.env.HARDHAT_NETWORK}\n`
+        `npx hardhat verify --constructor-args upgrade/arguments.js ${firechainZkEVMEtrogImpl.target} --network ${process.env.HARDHAT_NETWORK}\n`
     );
     console.log("Copy the following constructor arguments on: upgrade/arguments.js \n", [
         currentGlobalExitRootAddress,
         polTokenAddress,
         currentBridgeAddress,
-        currentPolygonZkEVMAddress,
+        currentFirechainZkEVMAddress,
     ]);
 
-    // deploy polygon zkEVM proxy
-    const PolygonTransparentProxy = await ethers.getContractFactory("PolygonTransparentProxy");
-    const newPolygonZkEVMContract = await PolygonTransparentProxy.deploy(
-        polygonZkEVMEtrogImpl.target,
-        currentPolygonZkEVMAddress,
+    // deploy firechain zkEVM proxy
+    const FirechainTransparentProxy = await ethers.getContractFactory("FirechainTransparentProxy");
+    const newFirechainZkEVMContract = await FirechainTransparentProxy.deploy(
+        firechainZkEVMEtrogImpl.target,
+        currentFirechainZkEVMAddress,
         "0x"
     );
-    await newPolygonZkEVMContract.waitForDeployment();
+    await newFirechainZkEVMContract.waitForDeployment();
     console.log("#######################\n");
-    console.log(`new PolygonZkEVM Proxy: ${newPolygonZkEVMContract.target}`);
+    console.log(`new FirechainZkEVM Proxy: ${newFirechainZkEVMContract.target}`);
 
     console.log("you can verify the new impl address with:");
     console.log(
-        `npx hardhat verify --constructor-args upgrade/arguments.js ${newPolygonZkEVMContract.target} --network ${process.env.HARDHAT_NETWORK}\n`
+        `npx hardhat verify --constructor-args upgrade/arguments.js ${newFirechainZkEVMContract.target} --network ${process.env.HARDHAT_NETWORK}\n`
     );
     console.log("Copy the following constructor arguments on: upgrade/arguments.js \n", [
-        polygonZkEVMEtrogImpl.target,
-        currentPolygonZkEVMAddress,
+        firechainZkEVMEtrogImpl.target,
+        currentFirechainZkEVMAddress,
         "0x",
     ]);
 
-    // Upgrade to rollup manager previous polygonZKEVM
-    const PolygonRollupManagerFactory = await ethers.getContractFactory("PolygonRollupManager");
-    const implRollupManager = await upgrades.prepareUpgrade(currentPolygonZkEVMAddress, PolygonRollupManagerFactory, {
+    // Upgrade to rollup manager previous firechainZKEVM
+    const FirechainRollupManagerFactory = await ethers.getContractFactory("FirechainRollupManager");
+    const implRollupManager = await upgrades.prepareUpgrade(currentFirechainZkEVMAddress, FirechainRollupManagerFactory, {
         constructorArgs: [currentGlobalExitRootAddress, polTokenAddress, currentBridgeAddress],
         unsafeAllow: ["constructor", "state-variable-immutable"],
     });
 
     console.log("#######################\n");
-    console.log(`Polygon rollup manager: ${implRollupManager}`);
+    console.log(`Firechain rollup manager: ${implRollupManager}`);
 
     console.log("you can verify the new impl address with:");
     console.log(
@@ -273,16 +273,16 @@ async function main() {
         proxyAdmin.target,
         0, // value
         proxyAdmin.interface.encodeFunctionData("upgradeAndCall", [
-            currentPolygonZkEVMAddress,
+            currentFirechainZkEVMAddress,
             implRollupManager,
-            PolygonRollupManagerFactory.interface.encodeFunctionData("initialize", [
+            FirechainRollupManagerFactory.interface.encodeFunctionData("initialize", [
                 trustedAggregator,
                 pendingStateTimeout,
                 trustedAggregatorTimeout,
                 admin,
                 currentTimelockAddress,
                 emergencyCouncilAddress,
-                newPolygonZkEVMContract.target,
+                newFirechainZkEVMContract.target,
                 verifierContract.target,
                 newForkID,
                 chainID,
@@ -318,7 +318,7 @@ async function main() {
         scheduleData,
         executeData,
         verifierAddress: verifierContract.target,
-        newPolygonZKEVM: newPolygonZkEVMContract.target,
+        newFirechainZKEVM: newFirechainZkEVMContract.target,
         timelockContractAdress: currentTimelockAddress,
     };
     fs.writeFileSync(pathOutputJson, JSON.stringify(outputJson, null, 1));

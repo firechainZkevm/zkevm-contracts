@@ -14,7 +14,7 @@ Contract for compressing and decompressing claim data
 #### Parameters:
 | Name | Type | Description                                                          |
 | :--- | :--- | :------------------------------------------------------------------- |
-|`__bridgeAddress` | address | PolygonZkEVMBridge contract address
+|`__bridgeAddress` | address | FirechainZkEVMBridge contract address
 |`__networkID` | uint32 | Network ID
 
 ### compressClaimCall

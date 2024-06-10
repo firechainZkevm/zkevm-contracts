@@ -18,7 +18,7 @@
     "chainID": 1001,
     "adminZkEVM":"0x617b3a3528F9cDd6630fd3301B9c8911F7Bf063D",
     "forkID": 1,
-    "consensusContract": "PolygonZkEVMEtrog",
+    "consensusContract": "FirechainZkEVMEtrog",
     "gasTokenAddress":"",
     "deployerPvtKey": "",
     "maxFeePerGas":"",

@@ -20,11 +20,11 @@ import "../helpers/utils";
 const pathOutputJson = path.join(__dirname, "./create_rollup_output.json");
 
 import {
-    PolygonRollupManager,
-    PolygonZkEVMV2,
-    PolygonZkEVMBridgeV2,
-    PolygonValidium,
-    PolygonValidiumEtrog,
+    FirechainRollupManager,
+    FirechainZkEVMV2,
+    FirechainZkEVMBridgeV2,
+    FirechainValidium,
+    FirechainValidiumEtrog,
 } from "../../typechain-types";
 
 async function main() {
@@ -66,18 +66,18 @@ async function main() {
         consensusContract,
     } = createRollupParameters;
 
-    const supportedConensus = ["PolygonZkEVMEtrog", "PolygonValidiumEtrog"];
+    const supportedConensus = ["FirechainZkEVMEtrog", "FirechainValidiumEtrog"];
 
     if (!supportedConensus.includes(consensusContract)) {
         throw new Error(`Consensus contract not supported, supported contracts are: ${supportedConensus}`);
     }
 
-    const dataAvailabilityProtocol = createRollupParameters.dataAvailabilityProtocol || "PolygonDataCommittee";
+    const dataAvailabilityProtocol = createRollupParameters.dataAvailabilityProtocol || "FirechainDataCommittee";
 
-    const supporteDataAvailabilityProtocols = ["PolygonDataCommittee"];
+    const supporteDataAvailabilityProtocols = ["FirechainDataCommittee"];
 
     if (
-        consensusContract.includes("PolygonValidium") &&
+        consensusContract.includes("FirechainValidium") &&
         !supporteDataAvailabilityProtocols.includes(dataAvailabilityProtocol)
     ) {
         throw new Error(
@@ -133,10 +133,10 @@ async function main() {
     }
 
     // Load Rollup manager
-    const PolgonRollupManagerFactory = await ethers.getContractFactory("PolygonRollupManager", deployer);
-    const rollupManagerContract = PolgonRollupManagerFactory.attach(
-        deployOutput.polygonRollupManagerAddress
-    ) as PolygonRollupManager;
+    const FyrechainRollupManagerFactory = await ethers.getContractFactory("FirechainRollupManager", deployer);
+    const rollupManagerContract = FyrechainRollupManagerFactory.attach(
+        deployOutput.firechainRollupManagerAddress
+    ) as FirechainRollupManager;
 
     const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
     if ((await rollupManagerContract.hasRole(DEFAULT_ADMIN_ROLE, deployer.address)) == false) {
@@ -171,22 +171,22 @@ async function main() {
         await rollupManagerContract.grantRole(CREATE_ROLLUP_ROLE, deployer.address);
 
     // Create consensus implementation
-    const PolygonconsensusFactory = (await ethers.getContractFactory(consensusContract, deployer)) as any;
-    let PolygonconsensusContract;
+    const FirechainconsensusFactory = (await ethers.getContractFactory(consensusContract, deployer)) as any;
+    let FirechainconsensusContract;
 
-    PolygonconsensusContract = await PolygonconsensusFactory.deploy(
-        deployOutput.polygonZkEVMGlobalExitRootAddress,
+    FirechainconsensusContract = await FirechainconsensusFactory.deploy(
+        deployOutput.firechainZkEVMGlobalExitRootAddress,
         deployOutput.polTokenAddress,
-        deployOutput.polygonZkEVMBridgeAddress,
-        deployOutput.polygonRollupManagerAddress
+        deployOutput.firechainZkEVMBridgeAddress,
+        deployOutput.firechainRollupManagerAddress
     );
-    await PolygonconsensusContract.waitForDeployment();
+    await FirechainconsensusContract.waitForDeployment();
 
     // Add a new rollup type with timelock
     const rollupCompatibilityID = 0;
     await (
         await rollupManagerContract.addNewRollupType(
-            PolygonconsensusContract.target,
+            FirechainconsensusContract.target,
             verifierContract.target,
             forkID,
             rollupCompatibilityID,
@@ -207,15 +207,15 @@ async function main() {
         createRollupParameters.gasTokenAddress != ethers.ZeroAddress
     ) {
         // Get bridge instance
-        const bridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2", deployer);
-        const polygonZkEVMBridgeContract = bridgeFactory.attach(
-            deployOutput.polygonZkEVMBridgeAddress
-        ) as PolygonZkEVMBridgeV2;
+        const bridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2", deployer);
+        const firechainZkEVMBridgeContract = bridgeFactory.attach(
+            deployOutput.firechainZkEVMBridgeAddress
+        ) as FirechainZkEVMBridgeV2;
 
         // Get token metadata
-        gasTokenMetadata = await polygonZkEVMBridgeContract.getTokenMetadata(createRollupParameters.gasTokenAddress);
+        gasTokenMetadata = await firechainZkEVMBridgeContract.getTokenMetadata(createRollupParameters.gasTokenAddress);
 
-        const wrappedData = await polygonZkEVMBridgeContract.wrappedTokenToTokenInfo(
+        const wrappedData = await firechainZkEVMBridgeContract.wrappedTokenToTokenInfo(
             createRollupParameters.gasTokenAddress
         );
         if (wrappedData.originNetwork != 0n) {
@@ -257,56 +257,56 @@ async function main() {
     console.log("#######################\n");
     console.log("Created new Rollup:", newZKEVMAddress);
 
-    if (consensusContract.includes("PolygonValidium") && dataAvailabilityProtocol === "PolygonDataCommittee") {
+    if (consensusContract.includes("FirechainValidium") && dataAvailabilityProtocol === "FirechainDataCommittee") {
         // deploy data commitee
-        const PolygonDataCommitteeContract = (await ethers.getContractFactory("PolygonDataCommittee", deployer)) as any;
-        let polygonDataCommittee;
+        const FirechainDataCommitteeContract = (await ethers.getContractFactory("FirechainDataCommittee", deployer)) as any;
+        let firechainDataCommittee;
 
         for (let i = 0; i < attemptsDeployProxy; i++) {
             try {
-                polygonDataCommittee = await upgrades.deployProxy(PolygonDataCommitteeContract, [], {
+                firechainDataCommittee = await upgrades.deployProxy(FirechainDataCommitteeContract, [], {
                     unsafeAllow: ["constructor"],
                 });
                 break;
             } catch (error: any) {
                 console.log(`attempt ${i}`);
-                console.log("upgrades.deployProxy of polygonDataCommittee ", error.message);
+                console.log("upgrades.deployProxy of firechainDataCommittee ", error.message);
             }
             // reach limits of attempts
             if (i + 1 === attemptsDeployProxy) {
-                throw new Error("polygonDataCommittee contract has not been deployed");
+                throw new Error("firechainDataCommittee contract has not been deployed");
             }
         }
-        await polygonDataCommittee?.waitForDeployment();
+        await firechainDataCommittee?.waitForDeployment();
 
         // Load data commitee
-        const PolygonValidiumContract = (await PolygonconsensusFactory.attach(newZKEVMAddress)) as PolygonValidium;
+        const FirechainValidiumContract = (await FirechainconsensusFactory.attach(newZKEVMAddress)) as FirechainValidium;
         // add data commitee to the consensus contract
-        if ((await PolygonValidiumContract.admin()) == deployer.address) {
+        if ((await FirechainValidiumContract.admin()) == deployer.address) {
             await (
-                await PolygonValidiumContract.setDataAvailabilityProtocol(polygonDataCommittee?.target as any)
+                await FirechainValidiumContract.setDataAvailabilityProtocol(firechainDataCommittee?.target as any)
             ).wait();
 
             // // Setup data commitee to 0
-            // await (await polygonDataCommittee?.setupCommittee(0, [], "0x")).wait();
+            // await (await firechainDataCommittee?.setupCommittee(0, [], "0x")).wait();
         } else {
-            await (await polygonDataCommittee?.transferOwnership(adminZkEVM)).wait();
+            await (await firechainDataCommittee?.transferOwnership(adminZkEVM)).wait();
         }
 
-        outputJson.polygonDataCommitteeAddress = polygonDataCommittee?.target;
+        outputJson.firechainDataCommitteeAddress = firechainDataCommittee?.target;
     }
 
     // Assert admin address
     expect(await upgrades.erc1967.getAdminAddress(newZKEVMAddress)).to.be.equal(rollupManagerContract.target);
     expect(await upgrades.erc1967.getImplementationAddress(newZKEVMAddress)).to.be.equal(
-        PolygonconsensusContract.target
+        FirechainconsensusContract.target
     );
 
     // Search added global exit root on the logs
     let globalExitRoot;
     for (const log of receipt?.logs) {
         if (log.address == newZKEVMAddress) {
-            const parsedLog = PolygonconsensusFactory.interface.parseLog(log);
+            const parsedLog = FirechainconsensusFactory.interface.parseLog(log);
             if (parsedLog != null && parsedLog.name == "InitialSequenceBatches") {
                 globalExitRoot = parsedLog.args.lastGlobalExitRoot;
             }
@@ -314,7 +314,7 @@ async function main() {
     }
 
     // Add the first batch of the created rollup
-    const newZKEVMContract = (await PolygonconsensusFactory.attach(newZKEVMAddress)) as PolygonZkEVMV2;
+    const newZKEVMContract = (await FirechainconsensusFactory.attach(newZKEVMAddress)) as FirechainZkEVMV2;
     const batchData = {
         transactions: await newZKEVMContract.generateInitializeTransaction(
             rollupID,

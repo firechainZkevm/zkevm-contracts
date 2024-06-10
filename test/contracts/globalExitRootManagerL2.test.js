@@ -4,55 +4,55 @@ const { ethers } = require('hardhat');
 const zero32bytes = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 describe('Global Exit Root L2', () => {
-    let PolygonZkEVMBridge;
-    let polygonZkEVMGlobalExitRoot;
+    let FirechainZkEVMBridge;
+    let firechainZkEVMGlobalExitRoot;
     let deployer;
 
     beforeEach('Deploy contracts', async () => {
         // load signers
-        [deployer, PolygonZkEVMBridge] = await ethers.getSigners();
+        [deployer, FirechainZkEVMBridge] = await ethers.getSigners();
 
         // deploy global exit root manager
-        const PolygonZkEVMGlobalExitRootFactory = await ethers.getContractFactory('PolygonZkEVMGlobalExitRootL2Mock', deployer);
-        polygonZkEVMGlobalExitRoot = await PolygonZkEVMGlobalExitRootFactory.deploy(PolygonZkEVMBridge.address);
+        const FirechainZkEVMGlobalExitRootFactory = await ethers.getContractFactory('FirechainZkEVMGlobalExitRootL2Mock', deployer);
+        firechainZkEVMGlobalExitRoot = await FirechainZkEVMGlobalExitRootFactory.deploy(FirechainZkEVMBridge.address);
     });
 
     it('should check the constructor parameters', async () => {
-        expect(await polygonZkEVMGlobalExitRoot.bridgeAddress()).to.be.equal(PolygonZkEVMBridge.address);
-        expect(await polygonZkEVMGlobalExitRoot.lastRollupExitRoot()).to.be.equal(zero32bytes);
+        expect(await firechainZkEVMGlobalExitRoot.bridgeAddress()).to.be.equal(FirechainZkEVMBridge.address);
+        expect(await firechainZkEVMGlobalExitRoot.lastRollupExitRoot()).to.be.equal(zero32bytes);
     });
 
     it('should update root and check global exit root', async () => {
         const newRootRollup = ethers.hexlify(ethers.randomBytes(32));
 
-        await expect(polygonZkEVMGlobalExitRoot.updateExitRoot(newRootRollup))
+        await expect(firechainZkEVMGlobalExitRoot.updateExitRoot(newRootRollup))
             .to.be.revertedWith('OnlyAllowedContracts');
 
         // Update root from the rollup
-        await polygonZkEVMGlobalExitRoot.connect(PolygonZkEVMBridge).updateExitRoot(newRootRollup);
+        await firechainZkEVMGlobalExitRoot.connect(FirechainZkEVMBridge).updateExitRoot(newRootRollup);
 
-        expect(await polygonZkEVMGlobalExitRoot.lastRollupExitRoot()).to.be.equal(newRootRollup);
+        expect(await firechainZkEVMGlobalExitRoot.lastRollupExitRoot()).to.be.equal(newRootRollup);
     });
 
     it('should update root and check the storage position matches', async () => {
         // Check global exit root
         const newRoot = ethers.hexlify(ethers.randomBytes(32));
         const blockNumber = 1;
-        await polygonZkEVMGlobalExitRoot.setLastGlobalExitRoot(newRoot, blockNumber);
-        expect(await polygonZkEVMGlobalExitRoot.globalExitRootMap(newRoot)).to.be.equal(blockNumber);
+        await firechainZkEVMGlobalExitRoot.setLastGlobalExitRoot(newRoot, blockNumber);
+        expect(await firechainZkEVMGlobalExitRoot.globalExitRootMap(newRoot)).to.be.equal(blockNumber);
         const mapStoragePosition = 0;
         const key = newRoot;
         const storagePosition = ethers.solidityPackedKeccak256(['uint256', 'uint256'], [key, mapStoragePosition]);
-        const storageValue = await ethers.provider.getStorageAt(polygonZkEVMGlobalExitRoot.address, storagePosition);
+        const storageValue = await ethers.provider.getStorageAt(firechainZkEVMGlobalExitRoot.address, storagePosition);
         expect(blockNumber).to.be.equal(ethers.BigNumber.from(storageValue).toNumber());
 
         // Check rollup exit root
         const newRootRollupExitRoot = ethers.hexlify(ethers.randomBytes(32));
-        await polygonZkEVMGlobalExitRoot.setExitRoot(newRootRollupExitRoot);
-        expect(await polygonZkEVMGlobalExitRoot.lastRollupExitRoot()).to.be.equal(newRootRollupExitRoot);
+        await firechainZkEVMGlobalExitRoot.setExitRoot(newRootRollupExitRoot);
+        expect(await firechainZkEVMGlobalExitRoot.lastRollupExitRoot()).to.be.equal(newRootRollupExitRoot);
 
         const storagePositionExitRoot = 1;
-        const storageValueExitRoot = await ethers.provider.getStorageAt(polygonZkEVMGlobalExitRoot.address, storagePositionExitRoot);
+        const storageValueExitRoot = await ethers.provider.getStorageAt(firechainZkEVMGlobalExitRoot.address, storagePositionExitRoot);
         expect(newRootRollupExitRoot, storageValueExitRoot);
     });
 });

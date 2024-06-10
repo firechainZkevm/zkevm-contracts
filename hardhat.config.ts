@@ -75,7 +75,7 @@ const config: HardhatUserConfig = {
             },
         ],
         overrides: {
-            "contracts/v2/PolygonRollupManager.sol": {
+            "contracts/v2/FirechainRollupManager.sol": {
                 version: "0.8.20",
                 settings: {
                     optimizer: {
@@ -85,7 +85,7 @@ const config: HardhatUserConfig = {
                     evmVersion: "shanghai",
                 }, // try yul optimizer
             },
-            "contracts/v2/PolygonZkEVMBridgeV2.sol": {
+            "contracts/v2/FirechainZkEVMBridgeV2.sol": {
                 version: "0.8.20",
                 settings: {
                     optimizer: {
@@ -95,7 +95,7 @@ const config: HardhatUserConfig = {
                     evmVersion: "shanghai",
                 },
             },
-            "contracts/v2/newDeployments/PolygonRollupManagerNotUpgraded.sol": {
+            "contracts/v2/newDeployments/FirechainRollupManagerNotUpgraded.sol": {
                 version: "0.8.20",
                 settings: {
                     optimizer: {
@@ -105,7 +105,7 @@ const config: HardhatUserConfig = {
                     evmVersion: "shanghai",
                 }, // try yul optimizer
             },
-            "contracts/v2/mocks/PolygonRollupManagerMock.sol": {
+            "contracts/v2/mocks/FirechainRollupManagerMock.sol": {
                 version: "0.8.20",
                 settings: {
                     optimizer: {
@@ -116,7 +116,7 @@ const config: HardhatUserConfig = {
                 }, // try yul optimizer
             },
             // Should have the same optimizations than the RollupManager to verify
-            "contracts/v2/lib/PolygonTransparentProxy.sol": {
+            "contracts/v2/lib/FirechainTransparentProxy.sol": {
                 version: "0.8.20",
                 settings: {
                     optimizer: {
@@ -215,8 +215,8 @@ const config: HardhatUserConfig = {
                 count: 20,
             },
         },
-        polygonZKEVMTestnet: {
-            url: "https://rpc.cardona.zkevm-rpc.com",
+        firechainZKEVMGhostrider: {
+            url: "https://ghostrider-zkevm.thefirechain.com",
             accounts: {
                 mnemonic: process.env.MNEMONIC || DEFAULT_MNEMONIC,
                 path: "m/44'/60'/0'/0",
@@ -224,7 +224,7 @@ const config: HardhatUserConfig = {
                 count: 20,
             },
         },
-        polygonZKEVMMainnet: {
+        firechainZKEVMMainnet: {
             url: "https://zkevm-rpc.com",
             accounts: {
                 mnemonic: process.env.MNEMONIC || DEFAULT_MNEMONIC,
@@ -250,8 +250,8 @@ const config: HardhatUserConfig = {
     },
     etherscan: {
         apiKey: {
-            polygonZKEVMTestnet: `${process.env.ETHERSCAN_ZKEVM_API_KEY}`,
-            polygonZKEVMMainnet: `${process.env.ETHERSCAN_ZKEVM_API_KEY}`,
+            firechainZKEVMGhostrider: `${process.env.ETHERSCAN_ZKEVM_API_KEY}`,
+            firechainZKEVMMainnet: `${process.env.ETHERSCAN_ZKEVM_API_KEY}`,
             goerli: `${process.env.ETHERSCAN_API_KEY}`,
             sepolia: `${process.env.ETHERSCAN_API_KEY}`,
             mainnet: `${process.env.ETHERSCAN_API_KEY}`,
@@ -259,15 +259,15 @@ const config: HardhatUserConfig = {
         },
         customChains: [
             {
-                network: "polygonZKEVMMainnet",
+                network: "firechainZKEVMMainnet",
                 chainId: 1101,
                 urls: {
-                    apiURL: "https://api-zkevm.polygonscan.com/api",
-                    browserURL: "https://zkevm.polygonscan.com/",
+                    apiURL: "https://api-zkevm.firescan.io/api",
+                    browserURL: "https://zkevm.firescan.io/",
                 },
             },
             {
-                network: "polygonZKEVMTestnet",
+                network: "firechainZKEVMGhostrider",
                 chainId: 2442,
                 urls: {
                     apiURL: "https://explorer-ui.cardona.zkevm-rpc.com/api",

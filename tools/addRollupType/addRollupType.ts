@@ -13,7 +13,7 @@ const genesis = require("./genesis.json");
 
 const pathOutputJson = path.join(__dirname, "./add_rollup_type_output.json");
 
-import {PolygonRollupManager} from "../../typechain-types";
+import {FirechainRollupManager} from "../../typechain-types";
 import "../../deployment/helpers/utils";
 
 async function main() {
@@ -27,9 +27,9 @@ async function main() {
         "description",
         "forkID",
         "consensusContract",
-        "polygonRollupManagerAddress",
-        "polygonZkEVMBridgeAddress",
-        "polygonZkEVMGlobalExitRootAddress",
+        "firechainRollupManagerAddress",
+        "firechainZkEVMBridgeAddress",
+        "firechainZkEVMGlobalExitRootAddress",
         "polTokenAddress",
         "verifierAddress",
         "rollupCompatibilityID",
@@ -46,14 +46,14 @@ async function main() {
         rollupCompatibilityID,
         forkID,
         consensusContract,
-        polygonRollupManagerAddress,
-        polygonZkEVMBridgeAddress,
-        polygonZkEVMGlobalExitRootAddress,
+        firechainRollupManagerAddress,
+        firechainZkEVMBridgeAddress,
+        firechainZkEVMGlobalExitRootAddress,
         polTokenAddress,
         verifierAddress,
     } = addRollupParameters;
 
-    const supportedConensus = ["PolygonZkEVMEtrog", "PolygonValidiumEtrog"];
+    const supportedConensus = ["FirechainZkEVMEtrog", "FirechainValidiumEtrog"];
 
     if (!supportedConensus.includes(consensusContract)) {
         throw new Error(`Consensus contract not supported, supported contracts are: ${supportedConensus}`);
@@ -108,10 +108,10 @@ async function main() {
     console.log("Using with: ", deployer.address);
 
     // Load Rollup manager
-    const PolgonRollupManagerFactory = await ethers.getContractFactory("PolygonRollupManager", deployer);
-    const rollupManagerContract = PolgonRollupManagerFactory.attach(
-        polygonRollupManagerAddress
-    ) as PolygonRollupManager;
+    const FyrechainRollupManagerFactory = await ethers.getContractFactory("FirechainRollupManager", deployer);
+    const rollupManagerContract = FyrechainRollupManagerFactory.attach(
+        firechainRollupManagerAddress
+    ) as FirechainRollupManager;
 
     const DEFAULT_ADMIN_ROLE = ethers.ZeroHash;
     if ((await rollupManagerContract.hasRole(DEFAULT_ADMIN_ROLE, deployer.address)) == false) {
@@ -128,36 +128,36 @@ async function main() {
         await rollupManagerContract.grantRole(ADD_ROLLUP_TYPE_ROLE, deployer.address);
 
     // Create consensus implementation
-    const PolygonconsensusFactory = (await ethers.getContractFactory(consensusContract, deployer)) as any;
-    let PolygonconsensusContract;
+    const FirechainconsensusFactory = (await ethers.getContractFactory(consensusContract, deployer)) as any;
+    let FirechainconsensusContract;
 
-    PolygonconsensusContract = await PolygonconsensusFactory.deploy(
-        polygonZkEVMGlobalExitRootAddress,
+    FirechainconsensusContract = await FirechainconsensusFactory.deploy(
+        firechainZkEVMGlobalExitRootAddress,
         polTokenAddress,
-        polygonZkEVMBridgeAddress,
-        polygonRollupManagerAddress
+        firechainZkEVMBridgeAddress,
+        firechainRollupManagerAddress
     );
-    await PolygonconsensusContract.waitForDeployment();
+    await FirechainconsensusContract.waitForDeployment();
 
     console.log("#######################\n");
-    console.log(`new PolygonconsensusContract impl: ${PolygonconsensusContract.target}`);
+    console.log(`new FirechainconsensusContract impl: ${FirechainconsensusContract.target}`);
 
     console.log("you can verify the new impl address with:");
     console.log(
-        `npx hardhat verify --constructor-args upgrade/arguments.js ${PolygonconsensusContract.target} --network ${process.env.HARDHAT_NETWORK}\n`
+        `npx hardhat verify --constructor-args upgrade/arguments.js ${FirechainconsensusContract.target} --network ${process.env.HARDHAT_NETWORK}\n`
     );
     console.log("Copy the following constructor arguments on: upgrade/arguments.js \n", [
-        polygonZkEVMGlobalExitRootAddress,
+        firechainZkEVMGlobalExitRootAddress,
         polTokenAddress,
-        polygonZkEVMBridgeAddress,
-        polygonRollupManagerAddress,
+        firechainZkEVMBridgeAddress,
+        firechainRollupManagerAddress,
     ]);
 
     // Add a new rollup type with timelock
     console.log(
         await (
             await rollupManagerContract.addNewRollupType(
-                PolygonconsensusContract.target,
+                FirechainconsensusContract.target,
                 verifierAddress,
                 forkID,
                 rollupCompatibilityID,

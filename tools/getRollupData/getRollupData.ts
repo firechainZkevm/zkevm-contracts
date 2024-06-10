@@ -8,19 +8,19 @@ import * as dotenv from "dotenv";
 dotenv.config({path: path.resolve(__dirname, "../../../.env")});
 import {ethers, upgrades} from "hardhat";
 const getRollupParams = require("./rollupDataParams.json");
-import {PolygonRollupManager} from "../../typechain-types";
+import {FirechainRollupManager} from "../../typechain-types";
 const pathOutputJson = path.join(__dirname, "./deploy_output.json");
 const pathCreateRollupOutput = path.join(__dirname, "./create_rollup_output.json");
 
 async function main() {
-    const RollupManagerFactory = await ethers.getContractFactory("PolygonRollupManager");
+    const RollupManagerFactory = await ethers.getContractFactory("FirechainRollupManager");
 
     const rollupManager = (await RollupManagerFactory.attach(
-        getRollupParams.polygonRollupManagerAddress
-    )) as PolygonRollupManager;
+        getRollupParams.firechainRollupManagerAddress
+    )) as FirechainRollupManager;
 
-    const polygonZkEVMBridgeAddress = await rollupManager.bridgeAddress();
-    const polygonZkEVMGlobalExitRootAddress = await rollupManager.globalExitRootManager();
+    const firechainZkEVMBridgeAddress = await rollupManager.bridgeAddress();
+    const firechainZkEVMGlobalExitRootAddress = await rollupManager.globalExitRootManager();
     const polTokenAddress = await rollupManager.pol();
 
     // FIlter first rollup ID ( the one on migration)
@@ -33,9 +33,9 @@ async function main() {
     const eventsAddRollup = await rollupManager.queryFilter(filter, 0, "latest");
     const upgradeToULxLyBlockNumber = eventsAddRollup[0].blockNumber;
     const deployOutput = {
-        polygonRollupManagerAddress: rollupManager.target,
-        polygonZkEVMBridgeAddress,
-        polygonZkEVMGlobalExitRootAddress,
+        firechainRollupManagerAddress: rollupManager.target,
+        firechainZkEVMBridgeAddress,
+        firechainZkEVMGlobalExitRootAddress,
         polTokenAddress,
         deploymentRollupManagerBlockNumber,
         upgradeToULxLyBlockNumber,

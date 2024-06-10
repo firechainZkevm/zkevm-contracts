@@ -3,11 +3,11 @@ import {ethers, upgrades} from "hardhat";
 import {
     VerifierRollupHelperMock,
     ERC20PermitMock,
-    PolygonRollupManagerMock,
-    PolygonZkEVMGlobalExitRoot,
-    PolygonZkEVMBridgeV2,
-    PolygonZkEVMV2,
-    PolygonRollupBase,
+    FirechainRollupManagerMock,
+    FirechainZkEVMGlobalExitRoot,
+    FirechainZkEVMBridgeV2,
+    FirechainZkEVMV2,
+    FirechainRollupBase,
     TokenWrapped,
 } from "../../typechain-types";
 import {takeSnapshot, time} from "@nomicfoundation/hardhat-network-helpers";
@@ -29,12 +29,12 @@ function computeGlobalIndex(indexLocal: any, indexRollup: any, isMainnet: Boolea
     }
 }
 
-describe("PolygonZkEVMBridge Contract", () => {
+describe("FirechainZkEVMBridge Contract", () => {
     upgrades.silenceWarnings();
 
-    let polygonZkEVMBridgeContract: PolygonZkEVMBridgeV2;
+    let firechainZkEVMBridgeContract: FirechainZkEVMBridgeV2;
     let polTokenContract: ERC20PermitMock;
-    let polygonZkEVMGlobalExitRoot: PolygonZkEVMGlobalExitRoot;
+    let firechainZkEVMGlobalExitRoot: FirechainZkEVMGlobalExitRoot;
 
     let deployer: any;
     let rollupManager: any;
@@ -46,25 +46,25 @@ describe("PolygonZkEVMBridge Contract", () => {
         // load signers
         [deployer, rollupManager, acc1] = await ethers.getSigners();
 
-        // deploy PolygonZkEVMBridge
-        const polygonZkEVMBridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2");
-        polygonZkEVMBridgeContract = (await upgrades.deployProxy(polygonZkEVMBridgeFactory, [], {
+        // deploy FirechainZkEVMBridge
+        const firechainZkEVMBridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2");
+        firechainZkEVMBridgeContract = (await upgrades.deployProxy(firechainZkEVMBridgeFactory, [], {
             initializer: false,
             unsafeAllow: ["constructor"],
-        })) as unknown as PolygonZkEVMBridgeV2;
+        })) as unknown as FirechainZkEVMBridgeV2;
 
         // deploy global exit root manager
-        const PolygonZkEVMGlobalExitRootFactory = await ethers.getContractFactory("PolygonZkEVMGlobalExitRoot");
-        polygonZkEVMGlobalExitRoot = await PolygonZkEVMGlobalExitRootFactory.deploy(
+        const FirechainZkEVMGlobalExitRootFactory = await ethers.getContractFactory("FirechainZkEVMGlobalExitRoot");
+        firechainZkEVMGlobalExitRoot = await FirechainZkEVMGlobalExitRootFactory.deploy(
             rollupManager.address,
-            polygonZkEVMBridgeContract.target
+            firechainZkEVMBridgeContract.target
         );
 
-        await polygonZkEVMBridgeContract.initialize(
+        await firechainZkEVMBridgeContract.initialize(
             networkIDMainnet,
             ethers.ZeroAddress, // zero for ether
             ethers.ZeroAddress, // zero for ether
-            polygonZkEVMGlobalExitRoot.target,
+            firechainZkEVMGlobalExitRoot.target,
             rollupManager.address,
             "0x"
         );
@@ -87,7 +87,7 @@ describe("PolygonZkEVMBridge Contract", () => {
 
         const salt = ethers.solidityPackedKeccak256(["uint32", "address"], [0, mainnetMaticAddress]);
 
-        const minimalBytecodeProxy = await polygonZkEVMBridgeContract.BASE_INIT_BYTECODE_WRAPPED_TOKEN();
+        const minimalBytecodeProxy = await firechainZkEVMBridgeContract.BASE_INIT_BYTECODE_WRAPPED_TOKEN();
         const hashInitCode = ethers.solidityPackedKeccak256(["bytes", "bytes"], [minimalBytecodeProxy, metadataToken]);
         const precalculateWrappedErc20 = await ethers.getCreate2Address(mainnetBridgeAddress, salt, hashInitCode);
 

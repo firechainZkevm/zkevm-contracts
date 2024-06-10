@@ -25,15 +25,15 @@ deploy:testnet:v1ToV2:localhost
 
 -   `timelockAdminAddress`: address, Timelock owner address, able to send start an upgradability process via timelock
 -   `minDelayTimelock`: number, Minimum timelock delay,
--   `salt`: bytes32, Salt used in `PolygonZkEVMDeployer` to deploy deterministic contracts, such as the PolygonZkEVMBridge
--   `initialZkEVMDeployerOwner`: address, Initial owner of the `PolygonZkEVMDeployer`
+-   `salt`: bytes32, Salt used in `FirechainZkEVMDeployer` to deploy deterministic contracts, such as the FirechainZkEVMBridge
+-   `initialZkEVMDeployerOwner`: address, Initial owner of the `FirechainZkEVMDeployer`
 -   `admin`:address, Admin address, can adjust RollupManager parameters or stop the emergency state
 -   `trustedAggregator`:address, Trusted aggregator address
 -   `trustedAggregatorTimeout`: uint64, If a sequence is not verified in this timeout everyone can verify it
 -   `pendingStateTimeout`: uint64, Once a pending state exceeds this timeout it can be consolidated
 -   `emergencyCouncilAddress`:address, Emergency council addres
 -   `polTokenAddress`: address, Matic token address, only if deploy on testnet can be left blank and will fullfilled by the scripts.
--   `zkEVMDeployerAddress`: address, Address of the `PolygonZkEVMDeployer`. Can be left blank, will be fullfilled automatically with the `deploy:deployer:ZkEVM:goerli` script.
+-   `zkEVMDeployerAddress`: address, Address of the `FirechainZkEVMDeployer`. Can be left blank, will be fullfilled automatically with the `deploy:deployer:ZkEVM:goerli` script.
 
 -   `realVerifier`: bool, Indicates whether deploy a real verifier or not for the new created
 -   `trustedSequencerURL`: string, trustedSequencer URL
@@ -43,7 +43,7 @@ deploy:testnet:v1ToV2:localhost
 -   `chainID`: uint64, chainID of the new rollup
 -   `adminZkEVM`:address, Admin address, can adjust Rollup parameters
 -   `forkID`: uint64, Fork ID of the new rollup, indicates the prover (zkROM/executor) version
--   `consensusContract`: string, Consensus contract name of the new rollup deployed, current options are: "PolygonZkEVMEtrog","PolygonValidiumEtrog",
+-   `consensusContract`: string, Consensus contract name of the new rollup deployed, current options are: "FirechainZkEVMEtrog","FirechainValidiumEtrog",
 -   `gasTokenAddress`:address, Gas token address, empty or address(0) for ether
 
 ### Optional Parameters

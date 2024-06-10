@@ -8,10 +8,10 @@ describe('Emergency mode test', () => {
     let admin;
 
     let verifierContract;
-    let polygonZkEVMBridgeContract;
-    let polygonZkEVMContract;
+    let firechainZkEVMBridgeContract;
+    let firechainZkEVMContract;
     let maticTokenContract;
-    let polygonZkEVMGlobalExitRoot;
+    let firechainZkEVMGlobalExitRoot;
 
     const maticTokenName = 'Matic Token';
     const maticTokenSymbol = 'MATIC';
@@ -60,43 +60,43 @@ describe('Emergency mode test', () => {
         }
 
         const nonceProxyBridge = Number((await ethers.provider.getTransactionCount(deployer.address))) + (firstDeployment ? 3 : 2);
-        const nonceProxyZkevm = nonceProxyBridge + 2; // Always have to redeploy impl since the polygonZkEVMGlobalExitRoot address changes
+        const nonceProxyZkevm = nonceProxyBridge + 2; // Always have to redeploy impl since the firechainZkEVMGlobalExitRoot address changes
 
         const precalculateBridgeAddress = ethers.getContractAddress({ from: deployer.address, nonce: nonceProxyBridge });
         const precalculateZkevmAddress = ethers.getContractAddress({ from: deployer.address, nonce: nonceProxyZkevm });
         firstDeployment = false;
 
-        const PolygonZkEVMGlobalExitRootFactory = await ethers.getContractFactory('PolygonZkEVMGlobalExitRoot');
-        polygonZkEVMGlobalExitRoot = await upgrades.deployProxy(PolygonZkEVMGlobalExitRootFactory, [], {
+        const FirechainZkEVMGlobalExitRootFactory = await ethers.getContractFactory('FirechainZkEVMGlobalExitRoot');
+        firechainZkEVMGlobalExitRoot = await upgrades.deployProxy(FirechainZkEVMGlobalExitRootFactory, [], {
             initializer: false,
             constructorArgs: [precalculateZkevmAddress, precalculateBridgeAddress],
             unsafeAllow: ['constructor', 'state-variable-immutable'],
         });
 
-        // deploy PolygonZkEVMBridge
-        const polygonZkEVMBridgeFactory = await ethers.getContractFactory('PolygonZkEVMBridge');
-        polygonZkEVMBridgeContract = await upgrades.deployProxy(polygonZkEVMBridgeFactory, [], { initializer: false });
+        // deploy FirechainZkEVMBridge
+        const firechainZkEVMBridgeFactory = await ethers.getContractFactory('FirechainZkEVMBridge');
+        firechainZkEVMBridgeContract = await upgrades.deployProxy(firechainZkEVMBridgeFactory, [], { initializer: false });
 
-        // deploy PolygonZkEVMMock
-        const PolygonZkEVMFactory = await ethers.getContractFactory('PolygonZkEVMMock');
-        polygonZkEVMContract = await upgrades.deployProxy(PolygonZkEVMFactory, [], {
+        // deploy FirechainZkEVMMock
+        const FirechainZkEVMFactory = await ethers.getContractFactory('FirechainZkEVMMock');
+        firechainZkEVMContract = await upgrades.deployProxy(FirechainZkEVMFactory, [], {
             initializer: false,
             constructorArgs: [
-                polygonZkEVMGlobalExitRoot.address,
+                firechainZkEVMGlobalExitRoot.address,
                 maticTokenContract.address,
                 verifierContract.address,
-                polygonZkEVMBridgeContract.address,
+                firechainZkEVMBridgeContract.address,
                 chainID,
                 0,
             ],
             unsafeAllow: ['constructor', 'state-variable-immutable'],
         });
 
-        expect(precalculateBridgeAddress).to.be.equal(polygonZkEVMBridgeContract.address);
-        expect(precalculateZkevmAddress).to.be.equal(polygonZkEVMContract.address);
+        expect(precalculateBridgeAddress).to.be.equal(firechainZkEVMBridgeContract.address);
+        expect(precalculateZkevmAddress).to.be.equal(firechainZkEVMContract.address);
 
-        await polygonZkEVMBridgeContract.initialize(networkIDMainnet, polygonZkEVMGlobalExitRoot.address, polygonZkEVMContract.address);
-        await polygonZkEVMContract.initialize(
+        await firechainZkEVMBridgeContract.initialize(networkIDMainnet, firechainZkEVMGlobalExitRoot.address, firechainZkEVMContract.address);
+        await firechainZkEVMContract.initialize(
             {
                 admin: admin.address,
                 trustedSequencer: trustedSequencer.address,
@@ -115,35 +115,35 @@ describe('Emergency mode test', () => {
 
         // Activate force batches
         await expect(
-            polygonZkEVMContract.connect(admin).activateForceBatches(),
-        ).to.emit(polygonZkEVMContract, 'ActivateForceBatches');
+            firechainZkEVMContract.connect(admin).activateForceBatches(),
+        ).to.emit(firechainZkEVMContract, 'ActivateForceBatches');
     });
 
     it('should activate emergency mode', async () => {
         // Check isEmergencyState
-        expect(await polygonZkEVMContract.isEmergencyState()).to.be.equal(false);
-        expect(await polygonZkEVMBridgeContract.isEmergencyState()).to.be.equal(false);
+        expect(await firechainZkEVMContract.isEmergencyState()).to.be.equal(false);
+        expect(await firechainZkEVMBridgeContract.isEmergencyState()).to.be.equal(false);
 
-        await expect(polygonZkEVMContract.connect(admin).deactivateEmergencyState())
+        await expect(firechainZkEVMContract.connect(admin).deactivateEmergencyState())
             .to.be.revertedWith('OnlyEmergencyState');
 
         // Set isEmergencyState
-        await expect(polygonZkEVMContract.connect(admin).activateEmergencyState(1))
+        await expect(firechainZkEVMContract.connect(admin).activateEmergencyState(1))
             .to.be.revertedWith('BatchNotSequencedOrNotSequenceEnd');
 
-        await expect(polygonZkEVMBridgeContract.connect(deployer).activateEmergencyState())
-            .to.be.revertedWith('OnlyPolygonZkEVM');
+        await expect(firechainZkEVMBridgeContract.connect(deployer).activateEmergencyState())
+            .to.be.revertedWith('OnlyFirechainZkEVM');
 
-        await expect(polygonZkEVMContract.activateEmergencyState(0))
-            .to.emit(polygonZkEVMContract, 'EmergencyStateActivated')
-            .to.emit(polygonZkEVMBridgeContract, 'EmergencyStateActivated');
+        await expect(firechainZkEVMContract.activateEmergencyState(0))
+            .to.emit(firechainZkEVMContract, 'EmergencyStateActivated')
+            .to.emit(firechainZkEVMBridgeContract, 'EmergencyStateActivated');
 
-        expect(await polygonZkEVMContract.isEmergencyState()).to.be.equal(true);
-        expect(await polygonZkEVMBridgeContract.isEmergencyState()).to.be.equal(true);
+        expect(await firechainZkEVMContract.isEmergencyState()).to.be.equal(true);
+        expect(await firechainZkEVMBridgeContract.isEmergencyState()).to.be.equal(true);
 
         // Once in emergency state no sequenceBatches/forceBatches can be done
         const l2txData = '0x123456';
-        const maticAmount = await polygonZkEVMContract.batchFee();
+        const maticAmount = await firechainZkEVMContract.batchFee();
         const currentTimestamp = (await ethers.provider.getBlock()).timestamp;
 
         const sequence = {
@@ -154,30 +154,30 @@ describe('Emergency mode test', () => {
         };
 
         // revert because emergency state
-        await expect(polygonZkEVMContract.sequenceBatches([sequence], deployer.address))
+        await expect(firechainZkEVMContract.sequenceBatches([sequence], deployer.address))
             .to.be.revertedWith('OnlyNotEmergencyState');
 
         // revert because emergency state
-        await expect(polygonZkEVMContract.sequenceForceBatches([sequence]))
+        await expect(firechainZkEVMContract.sequenceForceBatches([sequence]))
             .to.be.revertedWith('OnlyNotEmergencyState');
 
         // revert because emergency state
-        await expect(polygonZkEVMContract.forceBatch(l2txData, maticAmount))
+        await expect(firechainZkEVMContract.forceBatch(l2txData, maticAmount))
             .to.be.revertedWith('OnlyNotEmergencyState');
 
         // revert because emergency state
-        await expect(polygonZkEVMContract.consolidatePendingState(0))
+        await expect(firechainZkEVMContract.consolidatePendingState(0))
             .to.be.revertedWith('OnlyNotEmergencyState');
 
         // trustedAggregator forge the batch
         const newLocalExitRoot = '0x0000000000000000000000000000000000000000000000000000000000000001';
         const newStateRoot = '0x0000000000000000000000000000000000000000000000000000000000000001';
-        const numBatch = (await polygonZkEVMContract.lastVerifiedBatch()).toNumber() + 1;
+        const numBatch = (await firechainZkEVMContract.lastVerifiedBatch()).toNumber() + 1;
         const zkProofFFlonk = new Array(24).fill(ethers.HashZero);
         const pendingStateNum = 0;
 
         await expect(
-            polygonZkEVMContract.connect(trustedAggregator).verifyBatches(
+            firechainZkEVMContract.connect(trustedAggregator).verifyBatches(
                 pendingStateNum,
                 numBatch - 1,
                 numBatch,
@@ -187,13 +187,13 @@ describe('Emergency mode test', () => {
             ),
         ).to.be.revertedWith('OnlyNotEmergencyState');
 
-        // Check PolygonZkEVMBridge no PolygonZkEVMBridge is in emergency state also
+        // Check FirechainZkEVMBridge no FirechainZkEVMBridge is in emergency state also
         const tokenAddress = ethers.ZeroAddress;
         const amount = ethers.parseEther('10');
         const destinationNetwork = 1;
         const destinationAddress = deployer.address;
 
-        await expect(polygonZkEVMBridgeContract.bridgeAsset(
+        await expect(firechainZkEVMBridgeContract.bridgeAsset(
             destinationNetwork,
             destinationAddress,
             amount,
@@ -202,7 +202,7 @@ describe('Emergency mode test', () => {
             '0x',
         )).to.be.revertedWith('OnlyNotEmergencyState');
 
-        await expect(polygonZkEVMBridgeContract.bridgeMessage(
+        await expect(firechainZkEVMBridgeContract.bridgeMessage(
             destinationNetwork,
             destinationAddress,
             true,
@@ -213,7 +213,7 @@ describe('Emergency mode test', () => {
         const index = 0;
         const root = ethers.HashZero;
 
-        await expect(polygonZkEVMBridgeContract.claimAsset(
+        await expect(firechainZkEVMBridgeContract.claimAsset(
             proof,
             index,
             root,
@@ -226,7 +226,7 @@ describe('Emergency mode test', () => {
             '0x',
         )).to.be.revertedWith('OnlyNotEmergencyState');
 
-        await expect(polygonZkEVMBridgeContract.claimMessage(
+        await expect(firechainZkEVMBridgeContract.claimMessage(
             proof,
             index,
             root,
@@ -240,35 +240,35 @@ describe('Emergency mode test', () => {
         )).to.be.revertedWith('OnlyNotEmergencyState');
 
         // Emergency council should deactivate emergency mode
-        await expect(polygonZkEVMContract.activateEmergencyState(0))
+        await expect(firechainZkEVMContract.activateEmergencyState(0))
             .to.be.revertedWith('OnlyNotEmergencyState');
 
-        await expect(polygonZkEVMBridgeContract.connect(deployer).deactivateEmergencyState())
-            .to.be.revertedWith('OnlyPolygonZkEVM');
+        await expect(firechainZkEVMBridgeContract.connect(deployer).deactivateEmergencyState())
+            .to.be.revertedWith('OnlyFirechainZkEVM');
 
-        await expect(polygonZkEVMContract.deactivateEmergencyState())
+        await expect(firechainZkEVMContract.deactivateEmergencyState())
             .to.be.revertedWith('OnlyAdmin');
 
-        await expect(polygonZkEVMContract.connect(admin).deactivateEmergencyState())
-            .to.emit(polygonZkEVMContract, 'EmergencyStateDeactivated')
-            .to.emit(polygonZkEVMBridgeContract, 'EmergencyStateDeactivated');
+        await expect(firechainZkEVMContract.connect(admin).deactivateEmergencyState())
+            .to.emit(firechainZkEVMContract, 'EmergencyStateDeactivated')
+            .to.emit(firechainZkEVMBridgeContract, 'EmergencyStateDeactivated');
 
         // Check isEmergencyState
-        expect(await polygonZkEVMContract.isEmergencyState()).to.be.equal(false);
-        expect(await polygonZkEVMBridgeContract.isEmergencyState()).to.be.equal(false);
+        expect(await firechainZkEVMContract.isEmergencyState()).to.be.equal(false);
+        expect(await firechainZkEVMBridgeContract.isEmergencyState()).to.be.equal(false);
 
         /*
          * Continue normal flow
          * Approve tokens
          */
         await expect(
-            maticTokenContract.connect(trustedSequencer).approve(polygonZkEVMContract.address, maticAmount),
+            maticTokenContract.connect(trustedSequencer).approve(firechainZkEVMContract.address, maticAmount),
         ).to.emit(maticTokenContract, 'Approval');
 
-        const lastBatchSequenced = await polygonZkEVMContract.lastBatchSequenced();
+        const lastBatchSequenced = await firechainZkEVMContract.lastBatchSequenced();
         // Sequence Batches
-        await expect(polygonZkEVMContract.connect(trustedSequencer).sequenceBatches([sequence], trustedSequencer.address))
-            .to.emit(polygonZkEVMContract, 'SequenceBatches')
+        await expect(firechainZkEVMContract.connect(trustedSequencer).sequenceBatches([sequence], trustedSequencer.address))
+            .to.emit(firechainZkEVMContract, 'SequenceBatches')
             .withArgs(lastBatchSequenced + 1);
 
         // trustedAggregator forge the batch
@@ -279,7 +279,7 @@ describe('Emergency mode test', () => {
 
         // Verify batch
         await expect(
-            polygonZkEVMContract.connect(trustedAggregator).verifyBatches(
+            firechainZkEVMContract.connect(trustedAggregator).verifyBatches(
                 pendingStateNum,
                 numBatch - 1,
                 numBatch,
@@ -287,7 +287,7 @@ describe('Emergency mode test', () => {
                 newStateRoot,
                 zkProofFFlonk,
             ),
-        ).to.emit(polygonZkEVMContract, 'VerifyBatches')
+        ).to.emit(firechainZkEVMContract, 'VerifyBatches')
             .withArgs(numBatch, newStateRoot, trustedAggregator.address);
 
         const finalAggregatorMatic = await maticTokenContract.balanceOf(
@@ -301,7 +301,7 @@ describe('Emergency mode test', () => {
         const finalPendingStateNum = 1;
 
         await expect(
-            polygonZkEVMContract.connect(trustedAggregator).proveNonDeterministicPendingState(
+            firechainZkEVMContract.connect(trustedAggregator).proveNonDeterministicPendingState(
                 pendingStateNum,
                 finalPendingStateNum,
                 numBatch - 1,
@@ -313,7 +313,7 @@ describe('Emergency mode test', () => {
         ).to.be.revertedWith('FinalNumBatchDoesNotMatchPendingState');
 
         await expect(
-            polygonZkEVMContract.connect(trustedAggregator).proveNonDeterministicPendingState(
+            firechainZkEVMContract.connect(trustedAggregator).proveNonDeterministicPendingState(
                 pendingStateNum,
                 finalPendingStateNum,
                 numBatch - 1,
@@ -327,7 +327,7 @@ describe('Emergency mode test', () => {
         const newStateRootDistinct = '0x0000000000000000000000000000000000000000000000000000000000000002';
 
         await expect(
-            polygonZkEVMContract.proveNonDeterministicPendingState(
+            firechainZkEVMContract.proveNonDeterministicPendingState(
                 pendingStateNum,
                 finalPendingStateNum,
                 numBatch - 1,
@@ -336,12 +336,12 @@ describe('Emergency mode test', () => {
                 newStateRootDistinct,
                 zkProofFFlonk,
             ),
-        ).to.emit(polygonZkEVMContract, 'ProveNonDeterministicPendingState').withArgs(newStateRoot, newStateRootDistinct)
-            .to.emit(polygonZkEVMContract, 'EmergencyStateActivated')
-            .to.emit(polygonZkEVMBridgeContract, 'EmergencyStateActivated');
+        ).to.emit(firechainZkEVMContract, 'ProveNonDeterministicPendingState').withArgs(newStateRoot, newStateRootDistinct)
+            .to.emit(firechainZkEVMContract, 'EmergencyStateActivated')
+            .to.emit(firechainZkEVMBridgeContract, 'EmergencyStateActivated');
 
         // Check emergency state is active
-        expect(await polygonZkEVMContract.isEmergencyState()).to.be.equal(true);
-        expect(await polygonZkEVMBridgeContract.isEmergencyState()).to.be.equal(true);
+        expect(await firechainZkEVMContract.isEmergencyState()).to.be.equal(true);
+        expect(await firechainZkEVMBridgeContract.isEmergencyState()).to.be.equal(true);
     });
 });

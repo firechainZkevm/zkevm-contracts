@@ -7,7 +7,7 @@ import fs = require("fs");
 import * as dotenv from "dotenv";
 dotenv.config({path: path.resolve(__dirname, "../../../.env")});
 import {ethers, upgrades} from "hardhat";
-import {PolygonRollupManager, PolygonZkEVMTimelock} from "../../../typechain-types";
+import {FirechainRollupManager, FirechainZkEVMTimelock} from "../../../typechain-types";
 
 import {takeSnapshot, time, reset, setBalance, setStorageAt} from "@nomicfoundation/hardhat-network-helpers";
 
@@ -31,19 +31,19 @@ async function main() {
     const multisigSigner = await ethers.getSigner(timelockMultisig as any);
     await setBalance(timelockMultisig, 100n ** 18n);
 
-    const timelockContractFactory = await ethers.getContractFactory("PolygonZkEVMTimelock");
+    const timelockContractFactory = await ethers.getContractFactory("FirechainZkEVMTimelock");
     const timelockContract = (await timelockContractFactory.attach(
         deployOutputParameters.timelockContractAddress
-    )) as PolygonZkEVMTimelock;
+    )) as FirechainZkEVMTimelock;
 
     const timelockDelay = await timelockContract.getMinDelay();
 
-    const polygonZkEVMFactory = await ethers.getContractFactory("PolygonValidiumEtrog");
-    const polygonValidiumContract = (await polygonZkEVMFactory.attach(
+    const firechainZkEVMFactory = await ethers.getContractFactory("FirechainValidiumEtrog");
+    const firechainValidiumContract = (await firechainZkEVMFactory.attach(
         updateOutput.decodedScheduleData.decodedData.rollupContract
-    )) as PolygonZkEVM;
+    )) as FirechainZkEVM;
 
-    const dataAvailabilityProtocol = await polygonValidiumContract.dataAvailabilityProtocol();
+    const dataAvailabilityProtocol = await firechainValidiumContract.dataAvailabilityProtocol();
 
     await time.increase(timelockDelay);
 
@@ -77,10 +77,10 @@ async function main() {
 
     await (await multisigSigner.sendTransaction(txExecuteUpdate)).wait();
 
-    const RollupMangerFactory = await ethers.getContractFactory("PolygonRollupManager");
+    const RollupMangerFactory = await ethers.getContractFactory("FirechainRollupManager");
     const rollupManager = (await RollupMangerFactory.attach(
-        deployOutputParameters.polygonZkEVMAddress
-    )) as PolygonRollupManager;
+        deployOutputParameters.firechainZkEVMAddress
+    )) as FirechainRollupManager;
 
     expect(await rollupManager.rollupCount()).to.be.equal(2);
     expect(await rollupManager.rollupTypeCount()).to.be.equal(3);
@@ -98,7 +98,7 @@ async function main() {
     expect(rollupDataFinal.rollupCompatibilityID).to.be.equal(0);
 
     console.log("Updated zkevm Succedd");
-    expect(await polygonValidiumContract.dataAvailabilityProtocol()).to.be.equal(dataAvailabilityProtocol);
+    expect(await firechainValidiumContract.dataAvailabilityProtocol()).to.be.equal(dataAvailabilityProtocol);
 }
 
 main().catch((e) => {

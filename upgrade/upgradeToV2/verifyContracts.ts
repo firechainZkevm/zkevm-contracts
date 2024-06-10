@@ -21,9 +21,9 @@ async function main() {
     }
 
     const {polTokenAddress} = upgradeParameters;
-    const currentBridgeAddress = deployOutputParameters.polygonZkEVMBridgeAddress;
-    const currentGlobalExitRootAddress = deployOutputParameters.polygonZkEVMGlobalExitRootAddress;
-    const currentPolygonZkEVMAddress = deployOutputParameters.polygonZkEVMAddress;
+    const currentBridgeAddress = deployOutputParameters.firechainZkEVMBridgeAddress;
+    const currentGlobalExitRootAddress = deployOutputParameters.firechainZkEVMGlobalExitRootAddress;
+    const currentFirechainZkEVMAddress = deployOutputParameters.firechainZkEVMAddress;
 
     try {
         // verify verifier
@@ -47,14 +47,14 @@ async function main() {
     try {
         await run("verify:verify", {
             address: currentGlobalExitRootAddress,
-            constructorArguments: [currentPolygonZkEVMAddress, currentBridgeAddress],
+            constructorArguments: [currentFirechainZkEVMAddress, currentBridgeAddress],
         });
     } catch (error: any) {
         // expect(error.message.toLowerCase().includes("already verified")).to.be.equal(true);
     }
 
     // verify zkEVM implementation
-    const implNewZkEVM = await upgrades.erc1967.getImplementationAddress(outputJson.newPolygonZKEVM);
+    const implNewZkEVM = await upgrades.erc1967.getImplementationAddress(outputJson.newFirechainZKEVM);
     try {
         await run("verify:verify", {
             address: implNewZkEVM,
@@ -62,7 +62,7 @@ async function main() {
                 currentGlobalExitRootAddress,
                 polTokenAddress,
                 currentBridgeAddress,
-                currentPolygonZkEVMAddress,
+                currentFirechainZkEVMAddress,
             ],
         });
     } catch (error: any) {
@@ -72,8 +72,8 @@ async function main() {
     // verify zkEVM proxy
     try {
         await run("verify:verify", {
-            address: outputJson.newPolygonZKEVM,
-            constructorArguments: [implNewZkEVM, currentPolygonZkEVMAddress, "0x"],
+            address: outputJson.newFirechainZKEVM,
+            constructorArguments: [implNewZkEVM, currentFirechainZkEVMAddress, "0x"],
         });
     } catch (error: any) {
         // expect(error.message.toLowerCase().includes("proxyadmin")).to.be.equal(true);
@@ -82,8 +82,8 @@ async function main() {
     // verify zkEVM proxy
     try {
         await run("verify:verify", {
-            address: outputJson.newPolygonZKEVM,
-            constructorArguments: [implNewZkEVM, currentPolygonZkEVMAddress, "0x"],
+            address: outputJson.newFirechainZKEVM,
+            constructorArguments: [implNewZkEVM, currentFirechainZkEVMAddress, "0x"],
         });
     } catch (error: any) {
         // expect(error.message.toLowerCase().includes("proxyadmin")).to.be.equal(true);
@@ -92,7 +92,7 @@ async function main() {
     // verify rollup manager
     try {
         await run("verify:verify", {
-            address: currentPolygonZkEVMAddress,
+            address: currentFirechainZkEVMAddress,
             constructorArguments: [currentGlobalExitRootAddress, polTokenAddress, currentBridgeAddress],
         });
     } catch (error: any) {

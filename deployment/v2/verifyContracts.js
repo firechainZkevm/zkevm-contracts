@@ -56,7 +56,7 @@ async function main() {
                     [timelockAdminAddress],
                     [timelockAdminAddress],
                     timelockAdminAddress,
-                    deployOutputParameters.polygonRollupManager,
+                    deployOutputParameters.firechainRollupManager,
                 ],
             },
         );
@@ -81,11 +81,11 @@ async function main() {
         await hre.run(
             'verify:verify',
             {
-                address: deployOutputParameters.polygonRollupManager,
+                address: deployOutputParameters.firechainRollupManager,
                 constructorArguments: [
-                    deployOutputParameters.polygonZkEVMGlobalExitRootAddress,
+                    deployOutputParameters.firechainZkEVMGlobalExitRootAddress,
                     deployOutputParameters.polTokenAddress,
-                    deployOutputParameters.polygonZkEVMBridgeAddress,
+                    deployOutputParameters.firechainZkEVMBridgeAddress,
                 ],
             },
         );
@@ -98,10 +98,10 @@ async function main() {
         await hre.run(
             'verify:verify',
             {
-                address: deployOutputParameters.polygonZkEVMGlobalExitRootAddress,
+                address: deployOutputParameters.firechainZkEVMGlobalExitRootAddress,
                 constructorArguments: [
-                    deployOutputParameters.polygonRollupManager,
-                    deployOutputParameters.polygonZkEVMBridgeAddress,
+                    deployOutputParameters.firechainRollupManager,
+                    deployOutputParameters.firechainZkEVMBridgeAddress,
                 ],
             },
         );
@@ -114,10 +114,10 @@ async function main() {
             'verify:verify',
             {
                 contract: '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy',
-                address: deployOutputParameters.polygonZkEVMBridgeAddress,
+                address: deployOutputParameters.firechainZkEVMBridgeAddress,
                 constructorArguments: [
-                    await upgrades.erc1967.getImplementationAddress(deployOutputParameters.polygonZkEVMBridgeAddress),
-                    await upgrades.erc1967.getAdminAddress(deployOutputParameters.polygonZkEVMBridgeAddress),
+                    await upgrades.erc1967.getImplementationAddress(deployOutputParameters.firechainZkEVMBridgeAddress),
+                    await upgrades.erc1967.getAdminAddress(deployOutputParameters.firechainZkEVMBridgeAddress),
                     '0x',
                 ],
             },
@@ -130,7 +130,7 @@ async function main() {
         await hre.run(
             'verify:verify',
             {
-                address: deployOutputParameters.polygonZkEVMBridgeAddress,
+                address: deployOutputParameters.firechainZkEVMBridgeAddress,
             },
         );
     } catch (error) {
@@ -141,7 +141,7 @@ async function main() {
         await hre.run(
             'verify:verify',
             {
-                contract: 'contracts/v2/lib/PolygonTransparentProxy.sol:PolygonTransparentProxy',
+                contract: 'contracts/v2/lib/FirechainTransparentProxy.sol:FirechainTransparentProxy',
                 address: createRollupOutputParameters.rollupAddress,
                 constructorArguments: [
                     await upgrades.erc1967.getImplementationAddress(createRollupOutputParameters.rollupAddress),
@@ -168,36 +168,36 @@ async function main() {
 
     // verify zkEVM address or validium
 
-    if (createRollupOutputParameters.consensusContract === 'PolygonZkEVMEtrog') {
+    if (createRollupOutputParameters.consensusContract === 'FirechainZkEVMEtrog') {
         try {
             await hre.run(
                 'verify:verify',
                 {
-                    contract: 'contracts/v2/consensus/zkEVM/PolygonZkEVMEtrog.sol:PolygonZkEVMEtrog',
+                    contract: 'contracts/v2/consensus/zkEVM/FirechainZkEVMEtrog.sol:FirechainZkEVMEtrog',
                     address: createRollupOutputParameters.rollupAddress,
                     constructorArguments: [
-                        deployOutputParameters.polygonZkEVMGlobalExitRootAddress,
+                        deployOutputParameters.firechainZkEVMGlobalExitRootAddress,
                         deployOutputParameters.polTokenAddress,
-                        deployOutputParameters.polygonZkEVMBridgeAddress,
-                        deployOutputParameters.polygonRollupManager,
+                        deployOutputParameters.firechainZkEVMBridgeAddress,
+                        deployOutputParameters.firechainRollupManager,
                     ],
                 },
             );
         } catch (error) {
             // expect(error.message.toLowerCase().includes('proxyadmin')).to.be.equal(true);
         }
-    } else if (createRollupOutputParameters.consensusContract === 'PolygonValidiumEtrog') {
+    } else if (createRollupOutputParameters.consensusContract === 'FirechainValidiumEtrog') {
         try {
             await hre.run(
                 'verify:verify',
                 {
-                    contract: 'contracts/v2/consensus/validium/PolygonValidiumEtrog.sol:PolygonValidiumEtrog',
+                    contract: 'contracts/v2/consensus/validium/FirechainValidiumEtrog.sol:FirechainValidiumEtrog',
                     address: createRollupOutputParameters.rollupAddress,
                     constructorArguments: [
-                        deployOutputParameters.polygonZkEVMGlobalExitRootAddress,
+                        deployOutputParameters.firechainZkEVMGlobalExitRootAddress,
                         deployOutputParameters.polTokenAddress,
-                        deployOutputParameters.polygonZkEVMBridgeAddress,
-                        deployOutputParameters.polygonRollupManager,
+                        deployOutputParameters.firechainZkEVMBridgeAddress,
+                        deployOutputParameters.firechainRollupManager,
                     ],
                 },
             );

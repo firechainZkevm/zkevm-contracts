@@ -22,7 +22,7 @@ const { argv } = require('yargs');
 const {
     MemDB, ZkEVMDB, getPoseidon, processorUtils, smtUtils, Constants,
 } = require('@0xpolygonhermez/zkevm-commonjs');
-const contractsPolygonHermez = require('../index');
+const contractsFirechainZkevm = require('../index');
 
 // Example of use: node create-genesis.js --gen genesis-gen.json --out genesis.json
 async function main() {
@@ -75,7 +75,7 @@ async function main() {
     for (let j = 0; j < txs.length; j++) {
         const currentTx = txs[j];
 
-        // if (currentTx.contractName.PolygonZkEVMDeployer) {
+        // if (currentTx.contractName.FirechainZkEVMDeployer) {
         // }
         const tx = {
             to: currentTx.to || '0x',
@@ -90,8 +90,8 @@ async function main() {
         // Contract deployment from tx
         let bytecode; let
             abi;
-        if (contractsPolygonHermez[currentTx.contractName]) {
-            ({ bytecode, abi } = contractsPolygonHermez[currentTx.contractName]);
+        if (contractsFirechainZkevm[currentTx.contractName]) {
+            ({ bytecode, abi } = contractsFirechainZkevm[currentTx.contractName]);
         }
         if (currentTx.function) {
             const interfaceContract = new ethers.utils.Interface(abi);

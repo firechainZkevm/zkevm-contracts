@@ -24,7 +24,7 @@ async function main() {
         "roleName",
         "accountToGrantRole",
         "timelockDelay",
-        "polygonRollupManagerAddress",
+        "firechainRollupManagerAddress",
     ];
 
     for (const parameterName of mandatoryDeploymentParameters) {
@@ -33,7 +33,7 @@ async function main() {
         }
     }
 
-    const {roleName, accountToGrantRole, polygonRollupManagerAddress, timelockDelay} = addRollupParameters;
+    const {roleName, accountToGrantRole, firechainRollupManagerAddress, timelockDelay} = addRollupParameters;
     const salt = addRollupParameters.timelockSalt || ethers.ZeroHash;
 
     const supportedRoles = [
@@ -103,15 +103,15 @@ async function main() {
     console.log("Using with: ", deployer.address);
 
     // load timelock
-    const timelockContractFactory = await ethers.getContractFactory("PolygonZkEVMTimelock", deployer);
+    const timelockContractFactory = await ethers.getContractFactory("FirechainZkEVMTimelock", deployer);
 
     // Load Rollup manager
-    const PolgonRollupManagerFactory = await ethers.getContractFactory("PolygonRollupManager", deployer);
+    const FyrechainRollupManagerFactory = await ethers.getContractFactory("FirechainRollupManager", deployer);
 
     const operation = genOperation(
-        polygonRollupManagerAddress,
+        firechainRollupManagerAddress,
         0, // value
-        PolgonRollupManagerFactory.interface.encodeFunctionData("grantRole", [roleID, accountToGrantRole]),
+        FyrechainRollupManagerFactory.interface.encodeFunctionData("grantRole", [roleID, accountToGrantRole]),
         ethers.ZeroHash, // predecesoor
         salt // salt
     );

@@ -7,7 +7,7 @@ import fs = require("fs");
 import * as dotenv from "dotenv";
 dotenv.config({path: path.resolve(__dirname, "../../.env")});
 import {ethers, upgrades} from "hardhat";
-import {PolygonZkEVMTimelock} from "../../typechain-types";
+import {FirechainZkEVMTimelock} from "../../typechain-types";
 
 const pathOutputJson = path.join(__dirname, "./upgrade_outputL2.json");
 const deployParameters = require("./deploy_parameters.json");
@@ -18,7 +18,7 @@ async function main() {
     upgrades.silenceWarnings();
 
     const salt = upgradeParameters.timelockSalt || ethers.ZeroHash;
-    const currentBridgeAddress = deployOutputParameters.polygonZkEVMBridgeAddress;
+    const currentBridgeAddress = deployOutputParameters.firechainZkEVMBridgeAddress;
 
     // Load provider
     let currentProvider = ethers.provider;
@@ -68,8 +68,8 @@ async function main() {
 
     console.log("deploying with: ", deployer.address);
 
-    // Prepare Upgrade PolygonZkEVMBridge
-    const PreviousBridgeFactory = (await ethers.getContractFactory("PolygonZkEVMBridge")) as any;
+    // Prepare Upgrade FirechainZkEVMBridge
+    const PreviousBridgeFactory = (await ethers.getContractFactory("FirechainZkEVMBridge")) as any;
 
     // Import OZ upgrades
     await upgrades.forceImport(currentBridgeAddress as string, PreviousBridgeFactory, "transparent" as any);
@@ -82,21 +82,21 @@ async function main() {
     const timelockL2Address = await proxyAdmin.owner();
 
     // load timelock
-    const timelockContractFactory = await ethers.getContractFactory("PolygonZkEVMTimelock");
-    const timelockContract = (await timelockContractFactory.attach(timelockL2Address)) as PolygonZkEVMTimelock;
+    const timelockContractFactory = await ethers.getContractFactory("FirechainZkEVMTimelock");
+    const timelockContract = (await timelockContractFactory.attach(timelockL2Address)) as FirechainZkEVMTimelock;
     const timelockDelay = await timelockContract.getMinDelay();
 
     console.log("timelockAddress: ", timelockContract.target, {timelockDelay});
 
     // prapare upgrades
-    const polygonZkEVMBridgeFactory = await ethers.getContractFactory("PolygonZkEVMBridgeV2", deployer);
+    const firechainZkEVMBridgeFactory = await ethers.getContractFactory("FirechainZkEVMBridgeV2", deployer);
 
-    const newBridgeImpl = await upgrades.prepareUpgrade(currentBridgeAddress, polygonZkEVMBridgeFactory, {
+    const newBridgeImpl = await upgrades.prepareUpgrade(currentBridgeAddress, firechainZkEVMBridgeFactory, {
         unsafeAllow: ["constructor"],
     });
 
     console.log("#######################\n");
-    console.log(`PolygonZkEVMBridge impl: ${newBridgeImpl}`);
+    console.log(`FirechainZkEVMBridge impl: ${newBridgeImpl}`);
 
     console.log("you can verify the new impl address with:");
     console.log(`npx hardhat verify ${newBridgeImpl} --network ${process.env.HARDHAT_NETWORK}`);

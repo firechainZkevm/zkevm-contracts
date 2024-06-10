@@ -1,7 +1,7 @@
 {
   "realVerifier": true,
   "trustedSequencerURL": "https://zkevm-rpc.com/",
-  "networkName": "polygon zkEVM",
+  "networkName": "firechain zkEVM",
   "version": "v1.1.0-fork.4",
   "trustedSequencer": "0x148Ee7dAF16574cD020aFa34CC658f8F3fbd2800",
   "chainID": 1101,
@@ -17,4 +17,4 @@
   "zkEVMDeployerAddress": "0xCB19eDdE626906eB1EE52357a27F62dd519608C2",
   "initialZkEVMDeployerOwner": "0x4c1665d6651ecEfa59B9B3041951608468b18891",
   "maticTokenAddress": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0"
- }
+}

@@ -15,7 +15,7 @@
 ```
 {
   "proxyAddress": "0x012345",
-  "implementationName": "PolygonZkEVMUpgraded",
+  "implementationName": "FirechainZkEVMUpgraded",
   "constructorArgs": [
       "0x6407cf296a27B38fd29c401518504D388F1DFB3d",
       "0xF1b13757bcF3EF902a7847f409A6068BA43a89D4",

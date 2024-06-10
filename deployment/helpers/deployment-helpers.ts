@@ -12,23 +12,23 @@ import {HardhatEthersProvider} from "@nomicfoundation/hardhat-ethers/internal/ha
 import {
     VerifierRollupHelperMock,
     ERC20PermitMock,
-    PolygonRollupManagerMock,
-    PolygonZkEVMGlobalExitRoot,
-    PolygonZkEVMBridgeV2,
+    FirechainRollupManagerMock,
+    FirechainZkEVMGlobalExitRoot,
+    FirechainZkEVMBridgeV2,
     TokenWrapped,
     Address,
-    PolygonZkEVM,
-    PolygonZkEVMDeployer,
+    FirechainZkEVM,
+    FirechainZkEVMDeployer,
 } from "../../typechain-types";
 import {string} from "yargs";
 
-export async function deployPolygonZkEVMDeployer(
+export async function deployFirechainZkEVMDeployer(
     deployerAddress: string,
     signer: HardhatEthersSigner
-): Promise<[PolygonZkEVMDeployer, string]> {
-    const PolgonZKEVMDeployerFactory = await ethers.getContractFactory("PolygonZkEVMDeployer", signer);
+): Promise<[FirechainZkEVMDeployer, string]> {
+    const FyrechainZKEVMDeployerFactory = await ethers.getContractFactory("FirechainZkEVMDeployer", signer);
 
-    const deployTxZKEVMDeployer = (await PolgonZKEVMDeployerFactory.getDeployTransaction(deployerAddress)).data;
+    const deployTxZKEVMDeployer = (await FyrechainZKEVMDeployerFactory.getDeployTransaction(deployerAddress)).data;
 
     const gasLimit = BigInt(1000000); // Put 1 Million, aprox 650k are necessary
     const gasPrice = BigInt(ethers.parseUnits(gasPriceKeylessDeployment, "gwei"));
@@ -54,7 +54,7 @@ export async function deployPolygonZkEVMDeployer(
     // Check if it's already deployed
     const zkEVMDeployerAddress = ethers.getCreateAddress({from: tx.from as string, nonce: tx.nonce});
     if ((await signerProvider.getCode(zkEVMDeployerAddress)) !== "0x") {
-        const zkEVMDeployerContract = PolgonZKEVMDeployerFactory.attach(zkEVMDeployerAddress) as PolygonZkEVMDeployer;
+        const zkEVMDeployerContract = FyrechainZKEVMDeployerFactory.attach(zkEVMDeployerAddress) as FirechainZkEVMDeployer;
         expect(await zkEVMDeployerContract.owner()).to.be.equal(signer.address);
         return [zkEVMDeployerContract, ethers.ZeroAddress];
     }
@@ -70,15 +70,15 @@ export async function deployPolygonZkEVMDeployer(
 
     await (await signerProvider.broadcastTransaction(tx.serialized)).wait();
 
-    const zkEVMDeployerContract = (await PolgonZKEVMDeployerFactory.attach(
+    const zkEVMDeployerContract = (await FyrechainZKEVMDeployerFactory.attach(
         zkEVMDeployerAddress
-    )) as PolygonZkEVMDeployer;
+    )) as FirechainZkEVMDeployer;
     expect(await zkEVMDeployerContract.owner()).to.be.equal(deployerAddress);
     return [zkEVMDeployerContract, tx.from as string];
 }
 
 export async function create2Deployment(
-    polgonZKEVMDeployerContract: PolygonZkEVMDeployer,
+    fyrechainZKEVMDeployerContract: FirechainZkEVMDeployer,
     salt: string,
     deployTransaction: string,
     dataCall: string | null,
@@ -90,7 +90,7 @@ export async function create2Deployment(
 
     // Precalculate create2 address
     const precalculatedAddressDeployed = ethers.getCreate2Address(
-        polgonZKEVMDeployerContract.target as string,
+        fyrechainZKEVMDeployerContract.target as string,
         salt,
         hashInitCode
     );
@@ -104,7 +104,7 @@ export async function create2Deployment(
         // Deploy using create2 and call
         if (hardcodedGasLimit) {
             const populatedTransaction =
-                await polgonZKEVMDeployerContract.deployDeterministicAndCall.populateTransaction(
+                await fyrechainZKEVMDeployerContract.deployDeterministicAndCall.populateTransaction(
                     amount,
                     salt,
                     deployTransaction,
@@ -114,13 +114,13 @@ export async function create2Deployment(
             await (await deployer.sendTransaction(populatedTransaction)).wait();
         } else {
             await (
-                await polgonZKEVMDeployerContract.deployDeterministicAndCall(amount, salt, deployTransaction, dataCall)
+                await fyrechainZKEVMDeployerContract.deployDeterministicAndCall(amount, salt, deployTransaction, dataCall)
             ).wait();
         }
     } else {
         // Deploy using create2
         if (hardcodedGasLimit) {
-            const populatedTransaction = await polgonZKEVMDeployerContract.deployDeterministic.populateTransaction(
+            const populatedTransaction = await fyrechainZKEVMDeployerContract.deployDeterministic.populateTransaction(
                 amount,
                 salt,
                 deployTransaction
@@ -128,14 +128,14 @@ export async function create2Deployment(
             populatedTransaction.gasLimit = hardcodedGasLimit;
             await (await deployer.sendTransaction(populatedTransaction)).wait();
         } else {
-            await (await polgonZKEVMDeployerContract.deployDeterministic(amount, salt, deployTransaction)).wait();
+            await (await fyrechainZKEVMDeployerContract.deployDeterministic(amount, salt, deployTransaction)).wait();
         }
     }
     return [precalculatedAddressDeployed, true];
 }
 
 export function getCreate2Address(
-    polgonZKEVMDeployerContract: PolygonZkEVMDeployer,
+    fyrechainZKEVMDeployerContract: FirechainZkEVMDeployer,
     salt: string,
     deployTransaction: string
 ) {
@@ -143,5 +143,5 @@ export function getCreate2Address(
     const hashInitCode = ethers.solidityPackedKeccak256(["bytes"], [deployTransaction]);
 
     // Precalculate create2 address
-    return ethers.getCreate2Address(polgonZKEVMDeployerContract.target as string, salt, hashInitCode);
+    return ethers.getCreate2Address(fyrechainZKEVMDeployerContract.target as string, salt, hashInitCode);
 }
